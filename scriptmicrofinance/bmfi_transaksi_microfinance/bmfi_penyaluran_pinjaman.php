@@ -1,0 +1,3744 @@
+<<!-- script type="text/javascript">
+$(document).ready(function() {
+
+
+
+$('select').selectpicker();
+
+
+     // bsCustomFileInput.init()
+
+
+
+})
+</script> -->
+
+
+
+<!-- 
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/template/plugins/datatables-bs-5/select2/css/select2.min.css">
+
+
+<link rel="stylesheet" href="<?php echo base_url() ?>assets/template/plugins/datatables-bs-5/select2-bootstrap5-theme/select2-bootstrap-5-theme.min.css"> 
+
+
+
+<script src="<?php echo base_url() ?>assets/template/plugins/datatables-bs-5/select2/js/select2.min.js"></script>
+     -->
+
+<!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/css/bootstrap-select.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/js/bootstrap-select.min.js"></script>
+ -->
+
+
+
+<!-- <script src="<?php echo base_url() ?>assets/template/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script> -->
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+
+    <div class="card-header">
+
+
+
+ <center><h1 class="card-text"><b>Penyaluran Pinjaman
+
+        </p></b></h1></center>
+
+
+
+<center><h5 class="card-text"><b><?= $this->session->userdata('sess_all')->nama_masjid; ?>
+
+            </h5></center>
+
+        <center>  <p><br><?= $this->session->userdata('sess_all')->alamat_masjid; ?>
+
+        </p></b></center>
+
+<br>
+
+
+
+
+
+        <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addModal"><i
+                class="fa fa-plus"></i> Tambah</a>
+
+
+
+        <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal"><i
+                class="fa fa-filter"></i> Filter</a>
+
+
+
+        <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#cetakModal"><i
+                class="fa fa-print"></i> Cetak</a>
+
+        
+
+
+
+    </div>
+
+
+
+    <div class="card-body">
+
+
+
+     <div class="row">
+
+
+    <div class="col-md-12">
+
+
+     <div class="form-group">
+
+
+
+             <label>Pencarian</label>
+
+
+
+                <input type="text" id="txtketerangan" class="form-control" placeholder="Cari Data Berdasarkan Keterangan">
+
+
+
+                </div>
+
+         </div>
+
+
+     </div>
+
+
+
+
+        <div class="table-responsive">
+
+
+
+
+
+            <table id="tabel_bmfi_penyaluran_pinjaman" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                  <th class="align-middle">No</th>
+
+                    <th class="align-middle">Tanggal</th>
+
+                   
+
+                    <th class="align-middle">Nama Peserta</th>
+
+                     
+                 
+
+                    <th class="align-middle">Nominal (Rp)</th>
+
+
+        
+
+
+                     <th class="align-middle">Keterangan</th>
+
+
+                     <th class="align-middle">Skema Pinjaman</th>
+
+
+
+
+                     <th class="align-middle">Nama Pendamping</th>
+
+
+                     
+
+                    <th class="align-middle">Aksi</th>
+
+            </tr>
+        </thead>
+    
+        <tfoot>
+            <tr>
+                <th colspan="5" style="text-align:right">Total:</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<input type="hidden" id="hiddenid">
+
+
+
+
+
+
+
+<!-- modal filter -->
+
+
+
+<div class="modal fade" id="filterModal">
+
+
+
+    <div class="modal-dialog modal-md">
+
+
+
+        <div class="modal-content">
+
+
+
+            <div class="modal-header bg-secondary">
+
+
+
+                <h5 class="modal-title">Filter</h5>
+
+
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+
+
+
+                    <span aria-hidden="true">&times;</span>
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+            <form id="searchForm">
+
+
+
+                <div class="modal-body">
+
+
+
+                
+
+
+                            <div class="form-group d-none">
+
+
+
+                                <label>Nominal</label>
+
+
+
+                                <input type="text" id="txtnominal_keluar" class="form-control rupiah">
+
+
+
+                            </div>
+
+
+
+
+
+
+<!-- 
+                            <div class="form-group">
+
+
+
+                                <label>Keterangan</label>
+
+
+
+                                <input type="text" id="txtketerangan" class="form-control">
+
+
+
+                            </div>
+
+ -->
+
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nama Peserta Program</label>
+
+
+
+                                <select id="txtbmfi_peserta_program" class="form-control">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                    <?php foreach ($bmfi_peserta_program as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_peserta_program_bmfi_asesmen'] ?>">
+
+                                        <?php echo $v['nama_peserta_program_bmfi_asesmen'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nama Pendamping</label>
+
+
+
+                                <select id="txtbmfi_pendamping" class="form-control">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                    <?php foreach ($bmfi_pendamping as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_pendamping_bmfi_asesmen'] ?>">
+
+                                        <?php echo $v['nama_pendamping_bmfi_asesmen'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Skema Pinjaman</label>
+
+
+
+                                <select id="txtbmfi_skema_pinjaman" class="form-control">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                    <?php foreach ($bmfi_skema_pinjaman as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_bmfi_skema_pinjaman'] ?>">
+
+                                        <?php echo $v['nama_bmfi_skema_pinjaman'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label for="tgl1">Tanggal Awal</label>
+
+
+
+                                <input type="date" class="form-control mb-2" name="tgl1" placeholder="input Tanggal">
+
+
+
+                            </div>
+
+
+                            <div class="form-group">
+
+
+
+                                <label for="tgl2">Tanggal Akhir</label>
+
+
+
+                                <input type="date" class="form-control mb-2" name="tgl2" placeholder="input Tanggal">
+
+
+
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group d-none">
+
+
+
+
+                                <label>Provinsi</label>
+
+
+
+                                <select id="txtProvinsi" class="form-control select2">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                    <?php foreach ($provinsi as $p) { ?>
+
+
+
+                                    <option value="<?php echo $p['id'] ?>"><?php echo $p['nama_provinsi'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+                            <div class="form-group d-none">
+
+
+
+                                <label>KabupatenKota</label>
+
+
+
+                                <select id="txtKabupatenKota" class="form-control select2">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+                            <div class="form-group d-none">
+
+
+
+                                <label>Kecamatan</label>
+
+
+
+                                <select id="txtKecamatan" class="form-control select2">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+                            <div class="form-group d-none">
+
+
+
+                                <label>kelurahan_desa</label>
+
+
+
+                                <select id="txtkelurahan_desa" class="form-control select2">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+                <div class="modal-footer">
+
+
+
+                    <span class="loader"><i class="fa fa-spinner fa-spin"></i> Sedang proses...</span>
+
+
+
+                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i
+                            class="fa fa-times"></i> Batal</button>
+
+
+
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn-filter"><i class="fa fa-check"></i>
+
+                        Terapkan</button>
+
+
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
+
+
+
+        <!-- /.modal-content -->
+
+
+
+    </div>
+
+
+
+    <!-- /.modal-dialog -->
+
+
+
+</div>
+
+
+
+<!-- /.modal -->
+
+
+
+
+
+
+
+<!-- modal add -->
+
+
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+
+
+
+    <div class="modal-dialog modal-lg">
+
+
+
+        <div class="modal-content">
+
+
+
+            <div class="modal-header bg-secondary">
+
+
+
+                <h5 class="modal-title">Tambah Penyaluran Pinjaman</h5>
+
+
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+
+
+
+                    <span aria-hidden="true">&times;</span>
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+            <form id="bmfi_penyaluran_pinjamanFormAdd">
+
+
+
+                <input type="hidden" name="jalur" value="Masjid">
+
+
+
+                <input type="hidden" name="id_jalur" value="<?php echo $this->session->userdata('parent') ?>">
+
+
+
+                <div class="modal-body">
+
+
+
+                   <div class="row">
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+
+                                <label>Masjid</label>
+
+
+
+                                <input type="text" value="<?php echo $this->session->userdata('nmjalur') ?>"
+                                    class="form-control" readonly>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-8">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Tanggal</label>
+
+
+
+                                <input type="date" name="tanggal" class="form-control">
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                 
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nama Peserta Program</label>
+
+
+
+                                <select name="bmfi_peserta_program" class="form-control">
+
+
+
+                                    <option value="">--Pilih--</option>
+
+
+
+                                    <?php foreach ($bmfi_peserta_program as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_peserta_program_bmfi_asesmen'] ?>">
+
+                                        <?php echo $v['nama_peserta_program_bmfi_asesmen'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+
+
+                        <label>Nama Pendamping</label>
+
+
+
+                        <select name="bmfi_pendamping" class="form-control">
+
+
+
+                            <option value="">--Pilih--</option>
+
+
+
+                            <?php foreach ($bmfi_pendamping as $v) { ?>
+
+
+
+                            <option value="<?php echo $v['id_pendamping_bmfi_asesmen'] ?>">
+
+                                <?php echo $v['nama_pendamping_bmfi_asesmen'] ?></option>
+
+
+
+                            <?php } ?>
+
+
+
+                        </select>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+
+
+
+                        <label>Skema Pinjaman</label>
+
+
+
+                        <select name="bmfi_skema_pinjaman" class="form-control">
+
+
+
+                            <option value="">--Pilih--</option>
+
+
+
+                            <?php foreach ($bmfi_skema_pinjaman as $v) { ?>
+
+
+
+                            <option value="<?php echo $v['id_bmfi_skema_pinjaman'] ?>">
+
+                                <?php echo $v['nama_bmfi_skema_pinjaman'] ?></option>
+
+
+
+                            <?php } ?>
+
+
+
+                        </select>
+
+
+
+                    </div>
+
+
+
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nominal</label>
+
+
+
+                                <input type="text" name="nominal_keluar" class="form-control rupiah">
+
+
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-12">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Keterangan</label>
+
+
+
+                                <textarea name="keterangan" class="form-control"></textarea>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+
+
+                                <label>Lampiran</label>
+
+
+
+                                <div class="input-group">
+
+
+
+                                    <div class="custom-file">
+
+
+
+                                        <input type="file" class="custom-file-input" name="lampiran" id="lampiran">
+
+
+
+                                        <label class="custom-file-label" for="lampiran">Pilih file</label>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+            <div class="form-group">
+
+             <div class="form-check">
+
+            <input class="form-check-input" type="checkbox"  id="disclaimer" name="disclaimer" >
+
+            <label class="form-check-label" for="disclaimer"> Saya telah menyatakan bahwa data yang di input telah sesuai .
+           
+            </label>
+        
+        </div>
+    
+    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="modal-footer">
+
+
+
+                    <span class="loader"><i class="fa fa-spinner fa-spin"></i> Sedang proses...</span>
+
+
+
+                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i
+                            class="fa fa-times"></i> Batal</button>
+
+
+
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn-add"><i class="fa fa-check"></i>
+
+                        Submit</button>
+
+
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
+
+
+
+        <!-- /.modal-content -->
+
+
+
+    </div>
+
+
+
+    <!-- /.modal-dialog -->
+
+
+
+</div>
+
+
+
+<!-- /.modal -->
+
+
+
+<!-- modal edit -->
+
+
+
+<div class="modal fade" id="editModal">
+
+
+
+    <div class="modal-dialog modal-lg">
+
+
+
+        <div class="modal-content">
+
+
+
+            <div class="modal-header bg-secondary">
+
+
+
+                <h5 class="modal-title">Edit Penyaluran Pinjaman</h5>
+
+
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+
+
+
+                    <span aria-hidden="true">&times;</span>
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+            <form id="bmfi_penyaluran_pinjamanFormEdit">
+
+
+
+                <input type="hidden" name="id2">
+
+
+
+                <div class="modal-body">
+
+
+
+                  <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Masjid</label>
+
+
+
+                                <input type="text" value="<?php echo $this->session->userdata('nmjalur') ?>"
+                                    class="form-control" readonly>
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Tanggal</label>
+
+
+
+                                <input type="date" name="tanggal2" class="form-control">
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                  
+                    <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nama Peserta Program</label>
+
+
+
+                                <select name="bmfi_peserta_program2" class="form-control">
+
+
+
+
+                                    <?php foreach ($bmfi_peserta_program as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_peserta_program_bmfi_asesmen'] ?>">
+
+                                        <?php echo $v['nama_peserta_program_bmfi_asesmen'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nama Pendamping</label>
+
+
+
+                                <select name="bmfi_pendamping2" class="form-control">
+
+
+
+
+                                    <?php foreach ($bmfi_pendamping as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_pendamping_bmfi_asesmen'] ?>">
+
+                                        <?php echo $v['nama_pendamping_bmfi_asesmen'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <div class="form-group">
+
+
+
+                        <label>Skema Pinjaman</label>
+
+
+
+                        <select name="bmfi_skema_pinjaman2" class="form-control">
+
+
+
+                            <option value="">--Pilih--</option>
+
+
+
+                            <?php foreach ($bmfi_skema_pinjaman as $v) { ?>
+
+
+
+                            <option value="<?php echo $v['id_bmfi_skema_pinjaman'] ?>">
+
+                                <?php echo $v['nama_bmfi_skema_pinjaman'] ?></option>
+
+
+
+                            <?php } ?>
+
+
+
+                        </select>
+
+
+
+                    </div>
+
+
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Nominal</label>
+
+
+
+                                <input type="text" name="nominal_keluar2" class="form-control rupiah">
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-12">
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Keterangan</label>
+
+
+
+                                <textarea name="keterangan2" class="form-control"></textarea>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Lampiran</label>
+
+
+
+                                <div class="lampiran-place img-thumbnail mb-2"></div>
+
+
+
+                                <input type="hidden" name="lampiran1">
+
+
+
+                                <div class="input-group">
+
+
+
+                                    <div class="custom-file">
+
+
+
+                                        <input type="file" class="custom-file-input" name="lampiran2" id="lampiran2">
+
+
+
+                                        <label class="custom-file-label" for="lampiran2">Pilih file</label>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+        
+
+
+
+
+            <div class="form-group">
+
+             <div class="form-check">
+
+            <input class="form-check-input" type="checkbox"  id="disclaimer2" name="disclaimer2" >
+
+            <label class="form-check-label" for="disclaimer2"> Saya telah menyatakan bahwa data yang di input telah sesuai .
+           
+            </label>
+        
+        </div>
+    
+    </div>
+
+
+
+
+             </div>
+
+
+                <div class="modal-footer">
+
+
+
+                    <span class="loader"><i class="fa fa-spinner fa-spin"></i> Sedang proses...</span>
+
+
+
+                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i
+                            class="fa fa-times"></i> Batal</button>
+
+
+
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn-edit"><i class="fa fa-check"></i>
+
+                        Submit</button>
+
+
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
+
+
+
+        <!-- /.modal-content -->
+
+
+
+    </div>
+
+
+
+    <!-- /.modal-dialog -->
+
+
+
+</div>
+
+
+
+<!-- /.modal -->
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="cetakModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-sm" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Pilih Cetak</h5>
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form action="<?= site_url('panel/mp/cetak_bmfi_penyaluran_pinjaman') ?>" target="_blank">
+
+
+
+                          
+
+
+                          <div class="form-group">
+
+
+
+                                <label>Jenis Dana</label>
+
+
+
+                                <select name="txtbmfi_peserta_program[]" class="form-select multiple-select-field" data-placeholder="Silahkan Dipilih" multiple
+ required>
+
+
+
+                                    <?php foreach ($bmfi_peserta_program as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_bmfi_peserta_program'] ?>">
+
+                                        <?php echo $v['nama_bmfi_peserta_program'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+                            <div class="form-group">
+
+
+
+                                <label>Jenis Harta</label>
+
+
+
+                                <select name="txtbmfi_pendamping[]" class="form-select multiple-select-field" data-placeholder="Silahkan Dipilih" multiple
+ required>
+
+
+
+                                    <?php foreach ($bmfi_pendamping as $v) { ?>
+
+
+
+                                    <option value="<?php echo $v['id_bmfi_pendamping'] ?>">
+
+                                        <?php echo $v['nama_bmfi_pendamping'] ?></option>
+
+
+
+                                    <?php } ?>
+
+
+
+                                </select>
+
+
+
+                            </div>
+
+
+
+
+
+
+                    <div class="form-group">
+
+                        <label>Tanggal Awal</label>
+
+                        <input type="date" name="tgl1" class="form-control" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Tanggal Akhir</label>
+
+                        <input type="date" name="tgl2" class="form-control" required>
+
+                    </div>
+
+
+                <div class="modal-footer">
+
+
+                    <span class="loader"><i class="fa fa-spinner fa-spin"></i> Sedang proses...</span>
+
+
+
+                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i
+                            class="fa fa-times"></i> Batal</button>
+
+
+
+                    <button type="submit" class="btn btn-primary btn-sm" ><i class="fa fa-check"></i>
+
+                        Cetak</button>
+
+
+
+                </div>
+
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<input type="hidden" id="valIdKabupatenKota">
+
+
+
+<input type="hidden" id="valIdKecamatan">
+
+
+
+<input type="hidden" id="valIdkelurahan_desa">
+
+
+
+
+
+
+
+
+
+<script>
+
+var table = $("#tabel_bmfi_penyaluran_pinjaman").DataTable({
+
+
+
+
+    // destroy: true,
+
+    searching: false,
+
+    processing: true,
+
+    serverSide: true,
+
+    
+    ordering: false,
+
+
+    order: [],
+
+
+
+       "language": {
+            "processing": "<div class='loading-gif'><img src='<?php echo base_url() ?>assets/img/loading.gif' style='display: block; margin: auto;'></div>"
+        },
+
+
+    // stateSave: true,
+
+    ajax: {
+
+
+        url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_bmfi_penyaluran_pinjaman',
+
+
+        type: "POST",
+
+
+        data: function(d) {
+
+
+            // console.log(d) 
+
+
+            return $.extend({}, d, {
+
+
+                tgl1: $("[name='tgl1']").val(),
+
+                tgl2: $("[name='tgl2']").val(),
+                
+
+                txtketerangan: $("#txtketerangan").val(),
+
+
+
+                txtbmfi_peserta_program: $("#txtbmfi_peserta_program").val(),
+
+
+
+                txtbmfi_pendamping: $("#txtbmfi_pendamping").val(),
+
+
+
+
+                txtnominal_keluar: $("#txtnominal_keluar").val(),
+
+
+
+          
+
+
+                // txtMasjid: $("#txtMasjid").val(),
+
+
+
+                // txtProvinsi: $("#txtProvinsi").val(),
+
+
+
+                // txtKabupatenKota: $("#txtKabupatenKota").val(),
+
+
+
+                // txtKecamatan: $("#txtKecamatan").val(),
+
+
+
+                // txtkelurahan_desa: $("#txtkelurahan_desa").val(),
+
+
+
+            })
+
+
+
+        }
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+    // columnDefs: [{
+
+
+
+    //     targets: [0, 4, 4],
+
+
+
+    //     orderable: false
+
+
+    // }],
+
+
+
+
+
+
+
+
+  // dom: 'Bfrtip',
+  //       buttons: [
+  //           'copy', 'csv', 'excel', 'pdf', 'print'
+  //       ]
+  //   } );
+
+
+
+
+
+
+     "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ? 
+                i.replace(/[\Rp. ,]/g, '') * 1 :
+                 typeof i === 'number' ? 
+                 i : 0;
+
+            };
+ 
+            // Total over all pages
+            total_all = api
+                .column(5 )
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+ 
+            // Total over this page
+            pageTotal = api
+                .column(5, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+ 
+            // Update footer
+
+            var numFormat = $.fn.dataTable.render.number( '\.', '.', 0, 'Rp'  ).display;
+            $(api.column(5).footer() ).html(numFormat( pageTotal ));
+
+             // $(api.column(5).footer()).html('Rp' +' '+ pageTotal + ' ( Rp' +' '+ total_all + ' total)');
+        },
+
+
+
+
+//        dom: 'Bfrtip',
+//         buttons: [
+//             'copy', 'csv', 'excel', 'pdf', 'print'
+//         ]
+//     } );
+
+
+
+// ({
+
+
+
+
+
+});
+
+
+
+
+
+
+
+$(document).ready(function() {
+
+
+
+    $(".loader").hide();
+
+
+
+    $('.select2').select2({
+
+
+
+         theme: 'bootstrap-5'
+
+
+
+    });
+
+
+
+ $( '.multiple-select-field' ).select2( {
+
+    theme: "bootstrap-5",
+
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+
+    placeholder: $( this ).data( 'placeholder' ),
+
+    closeOnSelect: false,
+
+    
+});
+
+
+
+
+
+    $("#txtketerangan").bind("keyup change", function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        table.draw();
+
+
+
+    });
+
+
+
+
+
+    $("#searchForm").submit(function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        $("#filterModal").modal('hide');
+
+
+
+        table.draw();
+
+
+
+    })
+
+
+
+
+
+
+    $("#txtProvinsi").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kabupaten_kota',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("#txtKabupatenKota").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("#txtKabupatenKota").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kecamatan',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("#txtKecamatan").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("#txtKecamatan").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kelurahan_desa',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("#txtkelurahan_desa").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='provinsi']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kabupaten_kota',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kabupaten_kota']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='kabupaten_kota']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kecamatan',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kecamatan']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='kecamatan']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kelurahan_desa',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kelurahan_desa']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='provinsi2']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kabupaten_kota',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kabupaten_kota2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='kabupaten_kota2']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kecamatan',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kecamatan2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $("[name='kecamatan2']").change(function() {
+
+
+
+        var id = $(this).val();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kelurahan_desa',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: id
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kelurahan_desa2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $('#editModal').on('shown.bs.modal', function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        var idprovinsi = $("[name='provinsi2']").val();
+
+
+
+        var idkabupaten_kota = $("#valIdKabupatenKota").val();
+
+
+
+        var idkecamatan = $("#valIdKecamatan").val();
+
+
+
+        var idkelurahan_desa = $("#valIdkelurahan_desa").val();
+
+
+
+
+
+
+
+        // alert(idkecamatan);
+
+
+
+
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kabupaten_kota_selected',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: idprovinsi,
+
+
+
+                idkabupaten_kota: idkabupaten_kota
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kabupaten_kota2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kecamatan_selected',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: idkabupaten_kota,
+
+
+
+                idkecamatan: idkecamatan
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kecamatan2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/get_kelurahan_desa_selected',
+
+
+
+            type: "POST",
+
+
+
+            data: {
+
+
+
+                id: idkecamatan,
+
+
+
+                idkelurahan_desa: idkelurahan_desa
+
+
+
+            },
+
+
+
+            success: function(respon) {
+
+
+
+                $("[name='kelurahan_desa2']").html(respon);
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+    $('body').on("click", ".btn-edit", function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        var id = $(this).attr('id');
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/detail/' + id,
+
+
+
+            type: "GET",
+
+
+
+            dataType: "json",
+
+
+
+            success: function(respon) {
+
+
+
+
+
+                $("[name='id2']").val(respon.id_bmfi_penyaluran_pinjaman);
+
+
+
+                $("[name='id_jalur2']").val(respon.id_jalur_akses).trigger('change');
+
+
+
+
+
+                $("[name='tanggal2']").val(respon.tanggal);
+
+
+
+                $("[name='nominal_keluar2']").val(respon.nominal_keluar);
+
+
+
+
+                $("[name='keterangan2']").val(respon.keterangan);
+
+
+
+                // $("[name='provinsi2']").val(respon.id_provinsi).trigger('change');
+
+
+
+                // $("[name='kabupaten_kota2']").val(respon.id_kabupaten_kota).trigger('change');
+
+
+
+                // $("[name='kecamatan2']").val(respon.id_kecamatan).trigger('change');
+
+
+
+                // $("[name='kelurahan_desa2']").val(respon.id_kelurahan_desa).trigger('change');
+
+
+
+
+
+
+
+                $("[name='bmfi_peserta_program2']").val(respon.id_bmfi_peserta_program);
+
+
+
+
+
+                $("[name='bmfi_pendamping2']").val(respon.id_bmfi_pendamping);
+
+
+
+
+
+
+                $("[name='bmfi_skema_pinjaman2']").val(respon.id_bmfi_skema_pinjaman);
+
+
+
+                $("[name='masjid2']").val(respon.id_masjid).trigger('change');
+
+
+
+
+
+
+
+                $("[name='lampiran1']").val(respon.lampiran);
+
+
+
+
+                $(".lampiran-place").css('background-image', 'url(' + base_url +
+
+                    '/attachments/bmfi_penyaluran_pinjaman/' + respon.lampiran + ')');
+
+
+
+
+
+
+                $("#valIdKabupatenKota").val(respon.id_kabupaten_kota);
+
+
+
+                $("#valIdKecamatan").val(respon.id_kecamatan);
+
+
+
+                $("#valIdkelurahan_desa").val(respon.id_kelurahan_desa);
+
+
+
+                $("#editModal").modal('show');
+
+
+
+            }
+
+
+
+        })
+
+
+
+    });
+
+
+
+
+
+
+
+    $('body').on("click", ".btn-hapus", function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        $("#hiddenid").val($(this).attr('id'));
+
+
+
+        $("#deleteModal").modal('show');
+
+
+
+    });
+
+
+
+
+
+
+
+    $('body').on("click", ".btn-konfirmasi-hapus", function(e) {
+
+
+
+        e.preventDefault();
+
+
+
+        $.ajax({
+
+
+
+            url: base_url + 'panel/bmfi_penyaluran_pinjaman/delete/' + hiddenid.value,
+
+
+
+            type: "GET",
+
+
+
+            success: function(respon) {
+
+
+
+                $("#deleteModal").modal('hide');
+
+
+
+                toastr.success('Data berhasil dihapus.');
+
+
+
+                $('#tabel_bmfi_penyaluran_pinjaman').DataTable().ajax.reload();
+
+
+
+            }
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+    $('#bmfi_penyaluran_pinjamanFormAdd').validate({
+
+
+
+        rules:
+
+
+
+        {
+
+
+
+            nominal_keluar: {
+
+
+
+                required: true,
+
+
+
+            },
+
+
+
+
+
+            keterangan: {
+
+
+
+                required: true,
+
+
+
+            },
+
+
+
+
+
+
+
+
+
+
+
+            tanggal: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+
+
+
+
+            bmfi_peserta_program: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+             bmfi_pendamping: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+
+
+
+
+            disclaimer: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+         
+
+
+        },
+
+
+
+        messages: {
+
+
+
+            nominal_keluar: {
+
+
+
+                required: "Nominal Penerimaan tidak boleh kosong"
+
+
+
+            },
+
+
+
+
+
+
+
+             keterangan: {
+
+
+
+                required: "Keterangan Penerimaan tidak boleh kosong"
+
+
+
+            },
+
+
+
+
+
+
+
+
+
+            tanggal: {
+
+
+
+                required: "Tanggal Penerimaan harus diisi"
+
+
+
+            },
+
+
+
+
+
+
+
+            bmfi_peserta_program: {
+
+
+
+                required: "Jenis Dana Penerimaan harap pilih salah satu"
+
+
+
+            },
+
+
+
+
+
+            bmfi_pendamping: {
+
+
+
+                required: "Jenis Harta Penerimaan harap pilih salah satu"
+
+
+
+            },
+
+
+
+
+
+
+
+            disclaimer: {
+
+
+
+                required: "Persetujuan Harap di cheklist"
+
+
+
+            },
+
+
+
+
+
+
+        },
+
+
+
+        errorElement: 'span',
+
+
+
+        errorPlacement: function(error, element) {
+
+
+
+            error.addClass('invalid-feedback');
+
+
+
+            element.closest('.form-group').append(error);
+
+
+
+        },
+
+
+
+        highlight: function(element, errorClass, validClass) {
+
+
+
+            $(element).addClass('is-invalid');
+
+
+
+        },
+
+
+
+        unhighlight: function(element, errorClass, validClass) {
+
+
+
+            $(element).removeClass('is-invalid');
+
+
+
+        },
+
+
+
+        submitHandler: function(form) {
+
+
+
+            var dataForm = new FormData(form);
+
+
+
+            $.ajax({
+
+
+
+                url: base_url + 'panel/bmfi_penyaluran_pinjaman/add_bmfi_penyaluran_pinjaman',
+
+
+
+                type: "POST",
+
+
+
+                dataType: "json",
+
+
+
+                data: dataForm,
+
+
+
+                processData: false,
+
+
+
+                contentType: false,
+
+
+
+                beforeSend: function() {
+
+
+
+                    $(".loader").show();
+
+
+
+                    $("#btn-add").addClass('disabled');
+
+
+
+                },
+
+
+
+                success: function(respon) {
+
+
+
+
+                        $(".loader").hide();
+
+
+
+                        $("#btn-add").removeClass('disabled');
+
+
+
+                        $("#bmfi_penyaluran_pinjamanFormAdd")[0].reset();
+
+
+
+                        $("#addModal").modal('hide');
+
+
+
+                        $("[name='masjid']").val('').trigger('change');
+
+
+
+                        // $("[name='provinsi']").val('').trigger('change');
+
+
+
+                        // $("[name='kecamatan']").val('').trigger('change');
+
+
+
+                        // $("[name='kabupaten_kota']").val('').trigger('change');
+
+
+
+                        // $("[name='kelurahan_desa']").val('').trigger('change');
+
+
+
+                        $(".box-masjid").hide();
+
+
+
+                        toastr.success('Data berhasil disimpan.');
+
+
+                        $('#tabel_bmfi_penyaluran_pinjaman').DataTable().ajax.reload();
+
+
+
+                    }
+
+
+
+               
+
+
+            })
+
+
+
+        }
+
+
+
+    });
+
+
+
+
+
+
+
+    $('#bmfi_penyaluran_pinjamanFormEdit').validate({
+
+
+
+        rules: {
+
+
+
+            nominal_keluar2: {
+
+
+
+                required: true,
+
+
+
+            },
+
+
+
+         
+
+
+            keterangan2: {
+
+
+
+                required: true,
+
+
+
+            },
+
+
+
+            tanggal2: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+
+            bmfi_peserta_program2: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+
+            bmfi_pendamping2: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+
+
+            disclaimer2: {
+
+
+
+                required: true
+
+
+
+            },
+
+
+
+
+
+        },
+
+
+
+        messages: {
+
+
+
+            nominal_keluar2: {
+
+
+
+                required: "nominal_keluar lengkap tidak boleh kosong"
+
+
+
+            },
+
+
+
+         
+
+
+
+             keterangan2: {
+
+
+
+                required: "keterangan lengkap tidak boleh kosong"
+
+
+
+            },
+
+
+
+
+
+
+
+            tanggal2: {
+
+
+
+                required: "Tanggal harap pilih salah satu"
+
+
+
+            },
+
+
+
+
+
+          
+
+
+            bmfi_peserta_program2: {
+
+
+
+                required: "bmfi_peserta_program harap pilih salah satu"
+
+
+
+            },
+
+
+
+
+
+            bmfi_pendamping2: {
+
+
+
+                required: "bmfi_pendamping harap pilih salah satu"
+
+
+
+            },
+
+
+
+
+
+
+
+            disclaimer2: {
+
+
+
+                required: "Persetujuan Harap di cheklist"
+
+
+
+            },
+
+
+
+        },
+
+
+
+        errorElement: 'span',
+
+
+
+        errorPlacement: function(error, element) {
+
+
+
+            error.addClass('invalid-feedback');
+
+
+
+            element.closest('.form-group').append(error);
+
+
+
+        },
+
+
+
+        highlight: function(element, errorClass, validClass) {
+
+
+
+            $(element).addClass('is-invalid');
+
+
+
+        },
+
+
+
+        unhighlight: function(element, errorClass, validClass) {
+
+
+
+            $(element).removeClass('is-invalid');
+
+
+
+        },
+
+
+
+        submitHandler: function(form) {
+
+
+
+            var dataForm = new FormData(form);
+
+
+
+            var id = $("[name='id2']").val();
+
+
+
+            $.ajax({
+
+
+
+                url: base_url + 'panel/bmfi_penyaluran_pinjaman/edit_bmfi_penyaluran_pinjaman/' + id,
+
+
+
+                type: "POST",
+
+
+
+                dataType: "json",
+
+
+
+                data: dataForm,
+
+
+
+                processData: false,
+
+
+
+                contentType: false,
+
+
+
+                beforeSend: function() {
+
+
+
+                    $(".loader").show();
+
+
+
+                    $("#btn-edit").addClass('disabled');
+
+
+
+                },
+
+
+
+                success: function(respon) {
+
+
+
+                    $(".loader").hide();
+
+
+
+                    $("#btn-edit").removeClass('disabled');
+
+
+
+                    $("#editModal").modal('hide');
+
+
+
+                    toastr.success('Data berhasil disimpan.');
+
+
+
+                    $("#tabel_bmfi_penyaluran_pinjaman").DataTable().ajax.reload();
+
+
+
+                }
+
+
+
+            })
+
+
+
+        }
+
+
+
+    });
+
+
+    $(".rupiah").keyup(function(e) {
+        // console.log('tes')
+
+        var nilai = formatRupiah($(this).val(), 'Rp. ');
+
+        // $(".rupiah").val(nilai);
+
+        $(this).val(nilai);
+
+    })
+
+
+    function formatRupiah(angka, prefix) {
+
+        var number_string = angka.toString().replace(/[^,\d]/g, ''),
+
+            split = number_string.split(','),
+
+            sisa = split[0].length % 3,
+
+            rupiah = split[0].substr(0, sisa),
+
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+
+            separator = sisa ? '.' : '';
+
+            rupiah += separator + ribuan.join('.');
+
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+
+    }
+
+
+
+
+     $(".jumlah").keyup(function(e) {
+        // console.log('tes')
+
+        var nilai = formatJumlah($(this).val(), ' ');
+
+        // $(".rupiah").val(nilai);
+
+        $(this).val(nilai);
+
+    })
+
+
+    function formatJumlah(angka, prefix) {
+
+        var number_string = angka.toString().replace(/[^,\d]/g, ''),
+
+            split = number_string.split(','),
+
+            sisa = split[0].length % 3,
+
+            rupiah = split[0].substr(0, sisa),
+
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+
+            separator = sisa ? '.' : '';
+
+            rupiah += separator + ribuan.join('.');
+
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+        return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+
+    }
+
+
+})
+</script>
+
+
