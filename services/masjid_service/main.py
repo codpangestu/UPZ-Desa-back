@@ -1,5 +1,5 @@
 """
-Masjid Service — MENARA API
+Masjid Service — UPZ Desa API
 Handles: masjid CRUD, wilayah, rekap, master data (tema, kategori)
 Port: 8002
 """

@@ -1,8 +1,6 @@
-# MENARA API — Microservice Backend
+# UPZ Desa API — Microservice Backend
 
-**M**anajemen **E**konomi, **N**azhir, **A**mal, **R**umah **A**mal
-
-Backend API microservice untuk platform MENARA, dibangun dengan FastAPI.
+Backend API microservice untuk platform UPZ Desa BAZNAS, dibangun dengan FastAPI.
 
 ## Tech Stack
 
@@ -43,7 +41,7 @@ backend/
 
 ```bash
 git clone <repo-url>
-cd menara-api
+cd upzdesa-api
 
 # Create virtual environment
 python -m venv venv
@@ -102,8 +100,8 @@ Each service has its own Swagger UI:
 docker-compose up --build -d
 
 # Or run a single service manually:
-docker build -t menara-auth .
-docker run -p 8001:8001 --env-file .env menara-auth uvicorn services.auth_service.main:app --host 0.0.0.0 --port 8001
+docker build -t upzdesa-auth .
+docker run -p 8001:8001 --env-file .env upzdesa-auth uvicorn services.auth_service.main:app --host 0.0.0.0 --port 8001
 ```
 
 ## Microservices Overview

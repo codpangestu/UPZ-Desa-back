@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "menara-api-collection",
-    "name": "MENARA API v2.0.0",
-    "description": "Koleksi Postman untuk MENARA API — Microservice (5 Services)\n\n## Service Mapping\n- Auth Service (port 8001): Auth, Users\n- Masjid Service (port 8002): Masjid, Wilayah, Rekap\n- Content Service (port 8003): Content Publik\n- Transaction Service (port 8004): BukuKas, Sync\n- Admin Service (port 8005): Admin CRUD, Master Data\n\n## Cara Penggunaan\n1. Import collection dan environment ke Postman\n2. Pilih environment \"MENARA API - Local\"\n3. Setiap folder sudah指向 service URL yang sesuai\n4. Login via Auth Service (port 8001) untuk dapat token\n5. Token otomatis terisi ke environment",
+    "_postman_id": "upzdesa-api-collection",
+    "name": "UPZ Desa API v2.0.0",
+    "description": "Koleksi Postman untuk UPZ Desa API — Microservice (5 Services)\n\n## Service Mapping\n- Auth Service (port 8001): Auth, Users\n- Masjid Service (port 8002): Masjid, Wilayah, Rekap\n- Content Service (port 8003): Content Publik\n- Transaction Service (port 8004): BukuKas, Sync\n- Admin Service (port 8005): Admin CRUD, Master Data\n\n## Cara Penggunaan\n1. Import collection dan environment ke Postman\n2. Pilih environment \"UPZ Desa API - Local\"\n3. Setiap folder sudah指向 service URL yang sesuai\n4. Login via Auth Service (port 8001) untuk dapat token\n5. Token otomatis terisi ke environment",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -33,7 +33,7 @@
     },
     {
       "key": "api_key",
-      "value": "menara23apikey",
+      "value": "upzdesa23apikey",
       "type": "string"
     },
     {
@@ -2147,7 +2147,7 @@
         },
         {
           "name": "Master Data CRUD (Generic)",
-          "description": "CRUD untuk master data. Ganti {tipe} dengan: levels, labels, jenis-dana, jenis-harta, jenis-laporan, jenis-perolehan-aset, label-info-dana, tema, kategori-acara, kategori-cerita, kategori-donasi, kategori-postingan, kategori-panduan-pengguna, kategori-panduan-pengelola, kategori-menara-video",
+          "description": "CRUD untuk master data. Ganti {tipe} dengan: levels, labels, jenis-dana, jenis-harta, jenis-laporan, jenis-perolehan-aset, label-info-dana, tema, kategori-acara, kategori-cerita, kategori-donasi, kategori-postingan, kategori-panduan-pengguna, kategori-panduan-pengelola, kategori-upz-video",
           "item": [
             {
               "name": "Create Master Data",

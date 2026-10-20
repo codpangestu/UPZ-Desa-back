@@ -1,5 +1,5 @@
 """
-CORS configuration for MENARA API microservices.
+CORS configuration for UPZ Desa API microservices.
 
 Mengizinkan request dari browser (frontend) ke API microservices.
 Tanpa ini, browser memblokir semua request lintas-origin (mis. login

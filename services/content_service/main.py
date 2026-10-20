@@ -1,5 +1,5 @@
 """
-Content Service — MENARA API
+Content Service — UPZ Desa API
 Handles: home, informasi, kajian, acara, cerita, donasi, postingan, panduan, masjid public
 Port: 8003
 """

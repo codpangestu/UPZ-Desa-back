@@ -1,4 +1,4 @@
-# Release Notes — MENARA API
+# Release Notes — UPZ Desa API
 
 ## Version 2.0.0 (2024)
 

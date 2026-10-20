@@ -58,7 +58,7 @@ ADMIN_PUSAT = {
 SCOPED_ADMINS = [
     {
         "nama": "Admin Daerah Demo (Jawa Tengah)",
-        "email": "admin.daerah@menara.masjid",
+        "email": "admin.daerah@upzdesa.baznas.go.id",
         "id_level": 11,
         "id_provinsi": 33,
         "id_kabupaten_kota": None,
@@ -66,7 +66,7 @@ SCOPED_ADMINS = [
     },
     {
         "nama": "Admin Kab Demo (Banjarnegara)",
-        "email": "admin.kab@menara.masjid",
+        "email": "admin.kab@upzdesa.baznas.go.id",
         "id_level": 12,
         "id_provinsi": 33,
         "id_kabupaten_kota": 3304,
@@ -74,7 +74,7 @@ SCOPED_ADMINS = [
     },
     {
         "nama": "Admin KUA Demo (Wanayasa)",
-        "email": "admin.kua@menara.masjid",
+        "email": "admin.kua@upzdesa.baznas.go.id",
         "id_level": 13,
         "id_provinsi": 33,
         "id_kabupaten_kota": 3304,

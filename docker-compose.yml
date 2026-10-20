@@ -3,11 +3,11 @@ version: "3.8"
 services:
   db:
     image: mysql:8.0
-    container_name: menara-db
+    container_name: upzdesa-db
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      MYSQL_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      MYSQL_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
     ports:
       - "3307:3306"
     volumes:
@@ -22,19 +22,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: menara-auth
+    container_name: upzdesa-auth
     restart: unless-stopped
     ports:
       - "8001:8001"
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      DB_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      SECRET_KEY: ${SECRET_KEY:-menara-secret-key-change-in-production}
-      API_KEY: ${API_KEY:-menara23apikey}
-      APP_NAME: ${APP_NAME:-MENARA API}
+      SECRET_KEY: ${SECRET_KEY:-upzdesa-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-upzdesa23apikey}
+      APP_NAME: ${APP_NAME:-UPZ Desa API}
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8001"
@@ -47,19 +47,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: menara-masjid
+    container_name: upzdesa-masjid
     restart: unless-stopped
     ports:
       - "8002:8002"
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      DB_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      SECRET_KEY: ${SECRET_KEY:-menara-secret-key-change-in-production}
-      API_KEY: ${API_KEY:-menara23apikey}
-      APP_NAME: ${APP_NAME:-MENARA API}
+      SECRET_KEY: ${SECRET_KEY:-upzdesa-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-upzdesa23apikey}
+      APP_NAME: ${APP_NAME:-UPZ Desa API}
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8002"
@@ -72,19 +72,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: menara-content
+    container_name: upzdesa-content
     restart: unless-stopped
     ports:
       - "8003:8003"
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      DB_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      SECRET_KEY: ${SECRET_KEY:-menara-secret-key-change-in-production}
-      API_KEY: ${API_KEY:-menara23apikey}
-      APP_NAME: ${APP_NAME:-MENARA API}
+      SECRET_KEY: ${SECRET_KEY:-upzdesa-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-upzdesa23apikey}
+      APP_NAME: ${APP_NAME:-UPZ Desa API}
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8003"
@@ -97,19 +97,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: menara-transaction
+    container_name: upzdesa-transaction
     restart: unless-stopped
     ports:
       - "8004:8004"
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      DB_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      SECRET_KEY: ${SECRET_KEY:-menara-secret-key-change-in-production}
-      API_KEY: ${API_KEY:-menara23apikey}
-      APP_NAME: ${APP_NAME:-MENARA API}
+      SECRET_KEY: ${SECRET_KEY:-upzdesa-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-upzdesa23apikey}
+      APP_NAME: ${APP_NAME:-UPZ Desa API}
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8004"
@@ -122,19 +122,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: menara-admin
+    container_name: upzdesa-admin
     restart: unless-stopped
     ports:
       - "8005:8005"
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-menara_masjid_revamp}
+      DB_DATABASE: ${DB_DATABASE:-upzdesa_revamp}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASSWORD:-cauburuk123}
-      SECRET_KEY: ${SECRET_KEY:-menara-secret-key-change-in-production}
-      API_KEY: ${API_KEY:-menara23apikey}
-      APP_NAME: ${APP_NAME:-MENARA API}
+      SECRET_KEY: ${SECRET_KEY:-upzdesa-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-upzdesa23apikey}
+      APP_NAME: ${APP_NAME:-UPZ Desa API}
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8005"

@@ -13,7 +13,7 @@ JALUR_MASJID = "Masjid"
 JALUR_PUSAT = "Pusat"
 
 # Default values
-DEFAULT_PASSWORD = "menara23"
+DEFAULT_PASSWORD = "upzdesa23"
 DEFAULT_AVATAR = "user-default.png"
 DEFAULT_MASJID_THUMBNAIL = "masjid-default.jpg"
 

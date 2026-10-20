@@ -13,7 +13,7 @@ from shared.models.master import (
     Levels, Labels, JenisDana, JenisHarta, JenisLaporan,
     JenisPerolehanAset, LabelInfoDana, Tema,
     KategoriAcara, KategoriCerita, KategoriDonasi, KategoriPostingan,
-    KategoriPanduanPengguna, KategoriPanduanPengelola, KategoriMenaraVideo,
+    KategoriPanduanPengguna, KategoriPanduanPengelola, KategoriUpzVideo,
 )
 from shared.models.transaksi import (
     BukukasPenerimaan, BukukasPengeluaran, Kas, Coa,
@@ -64,7 +64,7 @@ class AdminService:
         "kategori-donasi": KategoriDonasi, "kategori-postingan": KategoriPostingan,
         "kategori-panduan-pengguna": KategoriPanduanPengguna,
         "kategori-panduan-pengelola": KategoriPanduanPengelola,
-        "kategori-menara-video": KategoriMenaraVideo,
+        "kategori-upz-video": KategoriUpzVideo,
     }
 
     _WILAYAH_MODELS = {

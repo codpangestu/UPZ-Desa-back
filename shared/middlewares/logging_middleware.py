@@ -2,7 +2,7 @@ import logging
 import time
 from fastapi import Request
 
-logger = logging.getLogger("menara-api")
+logger = logging.getLogger("upzdesa-api")
 
 
 async def logging_middleware(request: Request, call_next):

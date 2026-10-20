@@ -1,5 +1,5 @@
 """
-Admin Service — MENARA API
+Admin Service — UPZ Desa API
 Handles: admin CRUD (masjid, content, master, wilayah, transaksi, pengajuan), master data
 Port: 8005
 """

@@ -1,5 +1,5 @@
 """
-Auth Service — MENARA API
+Auth Service — UPZ Desa API
 Handles: authentication, user management
 Port: 8001
 """

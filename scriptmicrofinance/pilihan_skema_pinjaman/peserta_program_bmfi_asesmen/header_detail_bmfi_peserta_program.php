@@ -305,7 +305,7 @@
 
 
 
-    <img src="<?php echo base_url() ?>assets/logo-menara.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    <img src="<?php echo base_url() ?>assets/logo-upzDesa.png" width="30" height="30" class="d-inline-block align-top" alt="">
 
     Menara
 

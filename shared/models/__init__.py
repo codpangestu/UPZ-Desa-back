@@ -5,7 +5,7 @@ from shared.models.master import (
     JenisPerolehanAset, LabelInfoDana, Tema,
     KategoriAcara, KategoriCerita, KategoriDonasi,
     KategoriPostingan, KategoriPanduanPengguna,
-    KategoriPanduanPengelola, KategoriMenaraVideo,
+    KategoriPanduanPengelola, KategoriUpzVideo,
 )
 from shared.models.content import (
     Informasi, Kajian, Acara, Cerita, Donasi, Postingan,
@@ -45,7 +45,7 @@ __all__ = [
     "JenisPerolehanAset", "LabelInfoDana", "Tema",
     "KategoriAcara", "KategoriCerita", "KategoriDonasi",
     "KategoriPostingan", "KategoriPanduanPengguna",
-    "KategoriPanduanPengelola", "KategoriMenaraVideo",
+    "KategoriPanduanPengelola", "KategoriUpzVideo",
     "Informasi", "Kajian", "Acara", "Cerita", "Donasi", "Postingan",
     "PanduanPengguna", "PanduanPengelola",
     "Repository", "DokumentasiPengembangan", "DokumentasiPengujian",

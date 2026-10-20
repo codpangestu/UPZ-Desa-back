@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# cloudrun.sh — Deploy MENARA API to Google Cloud Run
+# cloudrun.sh — Deploy UPZ Desa API to Google Cloud Run
 # ============================================================
 # Prerequisites:
 #   1. gcloud CLI installed and authenticated
@@ -13,8 +13,8 @@ set -euo pipefail
 # === CONFIGURATION ===
 PROJECT_ID="${PROJECT_ID:-your-gcp-project-id}"
 REGION="${REGION:-asia-southeast2}"
-REPO_NAME="${REPO_NAME:-menara-api}"
-SERVICE_NAME="${SERVICE_NAME:-menara-api}"
+REPO_NAME="${REPO_NAME:-upzdesa-api}"
+SERVICE_NAME="${SERVICE_NAME:-upzdesa-api}"
 IMAGE_TAG="$(date +%Y%m%d-%H%M%S)"
 
 # === BUILD & PUSH ===
@@ -33,6 +33,6 @@ gcloud run deploy "${SERVICE_NAME}" \
   --region="${REGION}" \
   --platform=managed \
   --allow-unauthenticated \
-  --set-env-vars="DB_HOST=${DB_HOST:-127.0.0.1},DB_PORT=${DB_PORT:-3306},DB_DATABASE=${DB_DATABASE:-menara_masjid_revamp},DB_USERNAME=${DB_USERNAME:-root},DB_PASSWORD=${DB_PASSWORD:-cauburuk123},SECRET_KEY=${SECRET_KEY:-menara-secret-key-change-in-production},API_KEY=${API_KEY:-menara23apikey},APP_NAME=MENARA API,APP_VERSION=2.0.0,DEBUG=false"
+  --set-env-vars="DB_HOST=${DB_HOST:-127.0.0.1},DB_PORT=${DB_PORT:-3306},DB_DATABASE=${DB_DATABASE:-upzdesa_revamp},DB_USERNAME=${DB_USERNAME:-root},DB_PASSWORD=${DB_PASSWORD:-cauburuk123},SECRET_KEY=${SECRET_KEY:-upzdesa-secret-key-change-in-production},API_KEY=${API_KEY:-upzdesa23apikey},APP_NAME=UPZ DESA API,APP_VERSION=2.0.0,DEBUG=false"
 
 echo "=== Deploy Success! ==="

@@ -126,10 +126,10 @@ class KategoriPanduanPengelola(Base):
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
 
-class KategoriMenaraVideo(Base):
-    __tablename__ = "kategori_menara_video"
-    id_kategori_menara_video = Column(Integer, primary_key=True, autoincrement=True)
-    nama_kategori_menara_video = Column(String(255), nullable=True)
+class KategoriUpzVideo(Base):
+    __tablename__ = "kategori_upz_video"
+    id_kategori_upz_video = Column(Integer, primary_key=True, autoincrement=True)
+    nama_kategori_upz_video = Column(String(255), nullable=True)
     parent_id = Column(String(50), nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)

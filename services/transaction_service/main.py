@@ -1,5 +1,5 @@
 """
-Transaction Service — MENARA API
+Transaction Service — UPZ Desa API
 Handles: bukukas penerimaan/pengeluaran, sync push/pull
 Port: 8004
 """
