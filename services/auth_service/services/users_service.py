@@ -5,7 +5,7 @@ from services.auth_service.queries.users_queries import (
 )
 from services.auth_service.queries.auth_queries import get_user_by_email, create_user
 from shared.utils.jwt_helper import get_password_hash
-from shared.config.constants import DEFAULT_PASSWORD, DEFAULT_AVATAR, DEFAULT_USER_LEVEL, JALUR_MASJID
+from shared.config.constants import DEFAULT_PASSWORD, DEFAULT_AVATAR, DEFAULT_USER_LEVEL, JALUR_UPZ_DESA
 
 
 class UsersService:
@@ -24,7 +24,7 @@ class UsersService:
     def register(self, db: Session, **kwargs):
         user = create_user(
             db,
-            jalur_akses=JALUR_MASJID,
+            jalur_akses=JALUR_UPZ_DESA,
             id_jalur_akses=kwargs.get("id_jalur_akses", ""),
             nama=kwargs.get("nama"),
             jk=kwargs.get("jk", ""),

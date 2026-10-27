@@ -25,7 +25,7 @@ backend/
 │
 ├── services/                   # 5 Microservices
 │   ├── auth_service/           # Port 8001 — Auth + Users
-│   ├── masjid_service/         # Port 8002 — Masjid + Wilayah + Rekap
+│   ├── upz_desa_service/         # Port 8002 — UPZ Desa + Wilayah + Rekap
 │   ├── content_service/        # Port 8003 — Content + Home + Public
 │   ├── transaction_service/    # Port 8004 — BukuKas + Sync
 │   └── admin_service/          # Port 8005 — Admin CRUD + Master Data
@@ -71,8 +71,8 @@ Each service runs on its own port. Start them in separate terminals:
 # Terminal 1 - Auth Service (port 8001)
 uvicorn services.auth_service.main:app --reload --port 8001
 
-# Terminal 2 - Masjid Service (port 8002)
-uvicorn services.masjid_service.main:app --reload --port 8002
+# Terminal 2 - UPZ Desa Service (port 8002)
+uvicorn services.upz_desa_service.main:app --reload --port 8002
 
 # Terminal 3 - Content Service (port 8003)
 uvicorn services.content_service.main:app --reload --port 8003
@@ -88,7 +88,7 @@ uvicorn services.admin_service.main:app --reload --port 8005
 
 Each service has its own Swagger UI:
 - Auth: http://localhost:8001/docs
-- Masjid: http://localhost:8002/docs
+- UPZ Desa: http://localhost:8002/docs
 - Content: http://localhost:8003/docs
 - Transaction: http://localhost:8004/docs
 - Admin: http://localhost:8005/docs
@@ -109,7 +109,7 @@ docker run -p 8001:8001 --env-file .env upzdesa-auth uvicorn services.auth_servi
 | Service | Port | Routes | Endpoints |
 |---------|------|--------|-----------|
 | **Auth** | 8001 | 16 | Login, Register, Users CRUD |
-| **Masjid** | 8002 | 16 | Masjid, Wilayah, Rekap |
+| **UPZ Desa** | 8002 | 16 | UPZ Desa, Wilayah, Rekap |
 | **Content** | 8003 | 48 | Home, Informasi, Kajian, Acara, dll |
 | **Transaction** | 8004 | 11 | BukuKas, Sync Push/Pull |
 | **Admin** | 8005 | 38 | Admin CRUD, Master Data |

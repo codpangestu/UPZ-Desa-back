@@ -13,45 +13,45 @@ service = AdminService()
 
 
 # ======================================================================
-# MASJID CRUD
+# UPZ_DESA CRUD
 # ======================================================================
 
-@router.post("/admin/masjid/create")
-def create_masjid(
+@router.post("/admin/upz-desa/create")
+def create_upz_desa(
     data: Dict[str, Any] = Body(...),
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     if not verify_api_key(x_api_key):
         return ApiResponse(status_code="101", status="API KEY Invalid !")
-    result = service.create_masjid(db, data)
+    result = service.create_upz_desa(db, data)
     return ApiResponse(data=result)
 
 
-@router.put("/admin/masjid/update/{id_masjid}")
-def update_masjid(
-    id_masjid: str,
+@router.put("/admin/upz-desa/update/{id_upz_desa}")
+def update_upz_desa(
+    id_upz_desa: str,
     data: Dict[str, Any] = Body(...),
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     if not verify_api_key(x_api_key):
         return ApiResponse(status_code="101", status="API KEY Invalid !")
-    if not service.update_masjid(db, id_masjid, data):
-        return ApiResponse(status_code="404", status="Masjid tidak ditemukan")
+    if not service.update_upz_desa(db, id_upz_desa, data):
+        return ApiResponse(status_code="404", status="UPZ Desa tidak ditemukan")
     return ApiResponse(status_code="000", status="Sukses")
 
 
-@router.delete("/admin/masjid/delete/{id_masjid}")
-def delete_masjid(
-    id_masjid: str,
+@router.delete("/admin/upz-desa/delete/{id_upz_desa}")
+def delete_upz_desa(
+    id_upz_desa: str,
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     if not verify_api_key(x_api_key):
         return ApiResponse(status_code="101", status="API KEY Invalid !")
-    if not service.delete_masjid(db, id_masjid):
-        return ApiResponse(status_code="404", status="Masjid tidak ditemukan")
+    if not service.delete_upz_desa(db, id_upz_desa):
+        return ApiResponse(status_code="404", status="UPZ Desa tidak ditemukan")
     return ApiResponse(message="Data deleted successfully !")
 
 
@@ -218,7 +218,7 @@ def delete_wilayah(
 
 
 # ======================================================================
-# MASJID DETAIL CRUD
+# UPZ_DESA DETAIL CRUD
 # ======================================================================
 
 @router.post("/admin/detail/{tipe}/create")
@@ -407,8 +407,8 @@ def create_pengajuan(
     result = service.create_pengajuan(db, data)
     if "error" in result:
         return ApiResponse(status_code="500", status=result["error"])
-    # Response berisi kode masjid + slug yang diterbitkan langsung, agar pemohon
-    # bisa lanjut ke langkah 2 (daftar admin masjid) dengan kode tsb.
+    # Response berisi kode UPZ Desa + slug yang diterbitkan langsung, agar pemohon
+    # bisa lanjut ke langkah 2 (daftar admin UPZ Desa) dengan kode tsb.
     return ApiResponse(status_code="000", status="Sukses", data=result)
 
 
@@ -427,7 +427,7 @@ def update_pengajuan(
         return ApiResponse(status_code="404", status="Data tidak ditemukan")
     if "error" in result:
         return ApiResponse(status_code="400", status=result["error"])
-    # Saat disetujui, response menyertakan kode masjid (aktivasi masjid + admin)
+    # Saat disetujui, response menyertakan kode UPZ Desa (aktivasi upz_desa + admin)
     if status_req == "disetujui":
         kode = result.get("kode_org_baznas")
         return ApiResponse(status_code="000", status="Sukses", data={"kode_org_baznas": kode})
@@ -451,16 +451,16 @@ def delete_pengajuan(
 # BULK SYNC DETAIL
 # ======================================================================
 
-@router.post("/admin/masjid/{id_masjid}/sync-detail")
-def sync_masjid_detail(
-    id_masjid: str,
+@router.post("/admin/upz-desa/{id_upz_desa}/sync-detail")
+def sync_upz_desa_detail(
+    id_upz_desa: str,
     data: Dict[str, List[Dict[str, Any]]] = Body(...),
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     if not verify_api_key(x_api_key):
         return ApiResponse(status_code="101", status="API KEY Invalid !")
-    results = service.sync_masjid_detail(db, id_masjid, data)
+    results = service.sync_upz_desa_detail(db, id_upz_desa, data)
     return ApiResponse(data=results)
 
 

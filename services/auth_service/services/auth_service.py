@@ -3,11 +3,11 @@ from sqlalchemy.orm import Session
 from services.auth_service.queries.auth_queries import get_user_by_email, get_user_by_id, create_user, update_last_login
 from shared.utils.jwt_helper import verify_password, get_password_hash, create_access_token
 from shared.config.constants import (
-    DEFAULT_PASSWORD, DEFAULT_AVATAR, DEFAULT_USER_LEVEL, JALUR_MASJID,
+    DEFAULT_PASSWORD, DEFAULT_AVATAR, DEFAULT_USER_LEVEL, JALUR_UPZ_DESA,
     LEVEL_ADMIN_KUA,
 )
 from shared.models.users import Users
-from shared.models.masjid import Masjid
+from shared.models.upz_desa import UpzDesa
 
 
 class AuthService:
@@ -46,12 +46,12 @@ class AuthService:
             }
         }
 
-    def login_admin_masjid(self, db: Session, email: str, password: str):
+    def login_admin_upz_desa(self, db: Session, email: str, password: str):
         user = get_user_by_email(db, email)
         if not user or not verify_password(password, user.password):
             raise HTTPException(status_code=401, detail="Email atau password salah")
-        if user.jalur_akses != JALUR_MASJID:
-            raise HTTPException(status_code=403, detail="Akses ditolak. Bukan akun Masjid")
+        if user.jalur_akses != JALUR_UPZ_DESA:
+            raise HTTPException(status_code=403, detail="Akses ditolak. Bukan akun UPZ Desa")
         if user.status_aktif != 1:
             raise HTTPException(status_code=403, detail="Akun tidak aktif")
 
@@ -146,10 +146,10 @@ class AuthService:
 
     def register_user(self, db: Session, data: dict):
         """
-        Register User / Admin Masjid.
+        Register User / Admin UPZ Desa.
         Jika `kode_org_baznas` diisi:
-        - Validasi kode terhadap tabel masjid (harus masjid aktif):
-          * valid -> user dibuat sebagai Admin Masjid (id_level=2, jalur_akses=Masjid)
+        - Validasi kode terhadap tabel UPZ Desa (harus aktif):
+          * valid -> user dibuat sebagai Admin UPZ Desa (id_level=2, jalur_akses=UPZ Desa)
         Jika `kode_org_baznas` kosong:
         - User dibuat sebagai Jamaah/Pengguna biasa (id_level=3, jalur_akses=Umum, id_labels=3).
         """
@@ -159,17 +159,17 @@ class AuthService:
 
         kode = (data.get("kode_org_baznas") or "").strip()
         if kode:
-            # Validasi: masjid dengan kode tsb harus sudah terdaftar & aktif
-            masjid = db.query(Masjid).filter(Masjid.kode_org_baznas == kode).first()
-            if not masjid or masjid.status_aktif != 1:
+            # Validasi: UPZ Desa dengan kode tsb harus sudah terdaftar & aktif
+            upz_desa = db.query(UpzDesa).filter(UpzDesa.kode_org_baznas == kode).first()
+            if not upz_desa or upz_desa.status_aktif != 1:
                 return {
                     "status_code": "404",
-                    "status": "Kode masjid tidak valid. Pastikan pengajuan masjid Anda sudah disetujui Admin BAZNAS.",
+                    "status": "Kode UPZ Desa tidak valid. Pastikan pengajuan UPZ Desa Anda sudah disetujui Admin BAZNAS.",
                 }
             create_user(
                 db,
-                jalur_akses=JALUR_MASJID,
-                id_jalur_akses=masjid.id_masjid,
+                jalur_akses=JALUR_UPZ_DESA,
+                id_jalur_akses=upz_desa.id_upz_desa,
                 nama=data.get("nama"),
                 jk=data.get("jk"),
                 alamat=data.get("alamat"),
@@ -177,14 +177,14 @@ class AuthService:
                 nohp=data.get("nohp", ""),
                 kode_org_baznas=kode,
                 password=get_password_hash(DEFAULT_PASSWORD),
-                id_level=2,  # Admin Masjid
+                id_level=2,  # Admin UPZ Desa
                 id_labels=1 if data.get("id_labels") is None else data.get("id_labels"),  # 1 = Admin
                 avatar=DEFAULT_AVATAR,
                 status_aktif=1,
                 catatan=data.get("catatan", ""),
             )
         else:
-            # User biasa / Jamaah (tanpa kode masjid)
+            # User biasa / Jamaah (tanpa kode UPZ Desa)
             create_user(
                 db,
                 jalur_akses="Umum",

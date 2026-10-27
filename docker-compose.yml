@@ -43,11 +43,11 @@ services:
       db:
         condition: service_healthy
 
-  masjid-service:
+  upz-desa-service:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: upzdesa-masjid
+    container_name: upzdesa-upz-desa
     restart: unless-stopped
     ports:
       - "8002:8002"
@@ -63,7 +63,7 @@ services:
       APP_VERSION: ${APP_VERSION:-2.0.0}
       DEBUG: "false"
       SERVICE_PORT: "8002"
-    command: uvicorn services.masjid_service.main:app --host 0.0.0.0 --port 8002
+    command: uvicorn services.upz_desa_service.main:app --host 0.0.0.0 --port 8002
     depends_on:
       db:
         condition: service_healthy

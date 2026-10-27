@@ -9,13 +9,13 @@ STATUS_NOT_FOUND = "404"
 STATUS_INTERNAL_ERROR = "500"
 
 # User access paths
-JALUR_MASJID = "Masjid"
+JALUR_UPZ_DESA = "UPZ Desa"
 JALUR_PUSAT = "Pusat"
 
 # Default values
 DEFAULT_PASSWORD = "upzdesa23"
 DEFAULT_AVATAR = "user-default.png"
-DEFAULT_MASJID_THUMBNAIL = "masjid-default.jpg"
+DEFAULT_UPZ_DESA_THUMBNAIL = "upz-desa-default.jpg"
 
 # Pagination
 DEFAULT_PAGE = 1
@@ -28,14 +28,14 @@ DEFAULT_USER_LEVEL = 3
 # Level Admin KUA (kolom users.id_level) — mengikuti baris tabel `levels` legacy
 # di DB (10=Admin BAZNAS Pusat, 11=Admin BAZNAS Provinsi/Admin Daerah,
 # 12=Admin BAZNAS Kabupaten Kota/Admin Kab, 13=Admin KUA). JANGAN pakai 4/5/6 —
-# id itu sudah dipakai data legacy lain (Anggota/Admin Masjid/Admin Monitor).
+# id itu sudah dipakai data legacy lain (Anggota/Admin UPZ Desa/Admin Monitor).
 # Dipakai untuk memisahkan opsi login "Admin KUA" dari "Admin BAZNAS".
 LEVEL_ADMIN_KUA = 13
 
 # Upload directories
 UPLOAD_DIRS = [
     "uploads",
-    "uploads/masjid",
+    "uploads/upz-desa",
     "uploads/foto",
     "uploads/dokumen",
     "uploads/profil",

@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/microfinance/{tipe}/list")
 def list_microfinance(
     tipe: str,
-    id_masjid: Optional[str] = None,
+    id_upz_desa: Optional[str] = None,
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=100),
     x_api_key: Optional[str] = Header(None),
@@ -22,7 +22,7 @@ def list_microfinance(
     err = require_api_key(x_api_key)
     if err:
         return err
-    data, total, error = q.list_by_tipe(db, tipe, id_masjid=id_masjid, page=page, per_page=per_page)
+    data, total, error = q.list_by_tipe(db, tipe, id_upz_desa=id_upz_desa, page=page, per_page=per_page)
     if error:
         return ApiResponse(status_code="400", status=error)
     return ApiResponse(
@@ -35,12 +35,12 @@ def list_microfinance(
 
 @router.get("/microfinance/mutasi/summary")
 def mutasi_summary(
-    id_masjid: str,
+    id_upz_desa: str,
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     err = require_api_key(x_api_key)
     if err:
         return err
-    data = q.summary_saldo(db, id_masjid)
+    data = q.summary_saldo(db, id_upz_desa)
     return ApiResponse(data=data)

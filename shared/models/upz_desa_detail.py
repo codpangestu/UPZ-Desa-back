@@ -36,7 +36,7 @@ class Document(Base):
     is_active = Column(Integer, default=1)
     # CATATAN Fix #48: tabel `document` TIDAK punya kolom created_at/updated_at
     # (beda dengan bank/medsos/struktur dst.) — mendeklarasikannya membuat query
-    # detail masjid publik selalu 500 "Unknown column 'document.created_at'".
+    # detail UPZ Desa publik selalu 500 "Unknown column 'document.created_at'".
 
 
 class Bank(Base):

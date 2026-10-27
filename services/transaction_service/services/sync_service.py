@@ -18,7 +18,7 @@ class SyncService:
 
     def pull(self, tables: Optional[str] = None, last_sync: Optional[str] = None) -> dict:
         """Sync pull for mobile app."""
-        default_tables = ["masjid", "kas", "bukukas_penerimaan", "bukukas_pengeluaran"]
+        default_tables = ["upz_desa", "kas", "bukukas_penerimaan", "bukukas_pengeluaran"]
         if tables:
             table_list = [t.strip() for t in tables.split(",")]
         else:

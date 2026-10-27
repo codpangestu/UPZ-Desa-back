@@ -7,7 +7,7 @@ Sekarang backend terdiri dari **5 microservice** yang berjalan independen:
 | Service                 | Port | URL                   | Fungsinya                           |
 | ----------------------- | ---- | --------------------- | ----------------------------------- |
 | **Auth Service**        | 8001 | http://localhost:8001 | Login, Register, Users              |
-| **Masjid Service**      | 8002 | http://localhost:8002 | Masjid, Wilayah, Rekap              |
+| **UPZ Desa Service**      | 8002 | http://localhost:8002 | UPZ Desa, Wilayah, Rekap              |
 | **Content Service**     | 8003 | http://localhost:8003 | Home, Informasi, Kajian, Acara, dll |
 | **Transaction Service** | 8004 | http://localhost:8004 | BukuKas, Sync Push/Pull             |
 | **Admin Service**       | 8005 | http://localhost:8005 | Admin CRUD, Master Data             |
@@ -63,11 +63,11 @@ cd C:\Users\User\Downloads\BAZNAS\ci4\backend
 uvicorn services.auth_service.main:app --reload --port 8001
 ```
 
-### Terminal 2 — Masjid Service (port 8002)
+### Terminal 2 — UPZ Desa Service (port 8002)
 
 ```bash
 cd C:\Users\User\Downloads\BAZNAS\ci4\backend
-uvicorn services.masjid_service.main:app --reload --port 8002
+uvicorn services.upz_desa_service.main:app --reload --port 8002
 ```
 
 ### Terminal 3 — Content Service (port 8003)
@@ -101,7 +101,7 @@ uvicorn services.admin_service.main:app --reload --port 8005
 cd C:\Users\User\Downloads\BAZNAS\ci4\backend
 
 uvicorn services.auth_service.main:app --reload --port 8001 &
-uvicorn services.masjid_service.main:app --reload --port 8002 &
+uvicorn services.upz_desa_service.main:app --reload --port 8002 &
 uvicorn services.content_service.main:app --reload --port 8003 &
 uvicorn services.transaction_service.main:app --reload --port 8004 &
 uvicorn services.admin_service.main:app --reload --port 8005 &
@@ -114,7 +114,7 @@ echo "Semua service berjalan!"
 _Perintah ini akan membuka setiap layanan di jendela PowerShell baru secara otomatis, sehingga log dari masing-masing service tidak saling bercampur._
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.auth_service.main:app --reload --port 8001"
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.masjid_service.main:app --reload --port 8002"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.upz_desa_service.main:app --reload --port 8002"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.content_service.main:app --reload --port 8003"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.transaction_service.main:app --reload --port 8004"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn services.admin_service.main:app --reload --port 8005"
@@ -138,7 +138,7 @@ Response sukses:
 
 ```json
 {"service":"auth","status":"ok"}
-{"service":"masjid","status":"ok"}
+{"service":"upz_desa","status":"ok"}
 {"service":"content","status":"ok"}
 {"service":"transaction","status":"ok"}
 {"service":"admin","status":"ok"}
@@ -153,7 +153,7 @@ Setiap service punya dokumentasi Swagger sendiri:
 | Service     | Swagger UI                 |
 | ----------- | -------------------------- |
 | Auth        | http://localhost:8001/docs |
-| Masjid      | http://localhost:8002/docs |
+| UPZ Desa      | http://localhost:8002/docs |
 | Content     | http://localhost:8003/docs |
 | Transaction | http://localhost:8004/docs |
 | Admin       | http://localhost:8005/docs |

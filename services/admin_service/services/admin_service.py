@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Any, Dict, List, Optional
-from services.admin_service.queries.admin_queries import create_record, update_record, delete_record, list_pengajuan, sync_masjid_detail_replace
-from shared.models.masjid import Masjid
+from services.admin_service.queries.admin_queries import create_record, update_record, delete_record, list_pengajuan, sync_upz_desa_detail_replace
+from shared.models.upz_desa import UpzDesa
 from shared.models.content import (
     Informasi, Kajian, Acara, Cerita, Donasi, Postingan, Publikasi,
     PanduanPengguna, PanduanPengelola, Pengumuman,
@@ -19,12 +19,12 @@ from shared.models.transaksi import (
     BukukasPenerimaan, BukukasPengeluaran, Kas, Coa,
     BukuAset, BerkasLaporan, SaranDanMasukan,
 )
-from shared.models.masjid_detail import (
+from shared.models.upz_desa_detail import (
     Fasilitas, Images, Document, Bank, Medsos, Logo,
     MitraKerjasama, Qris, Struktur, Kegiatan, Videos,
 )
 from shared.models.wilayah import Provinsi, KabupatenKota, Kecamatan, KelurahanDesa
-from shared.models.pengajuan import PengajuanMasjid
+from shared.models.pengajuan import PengajuanUpzDesa
 from shared.models.microfinance import (
     BmfiSejarahDanProfilMicrofinance, BmfiSaldoMicrofinance,
     BmfiPilihanSkemaPinjaman, BmfiPendamping, BmfiPesertaProgram,
@@ -36,7 +36,7 @@ from shared.schemas.base import model_to_dict
 from shared.utils.response_helper import ApiResponse
 
 # Batas maksimal nominal pinjaman BMM (dikonfirmasi tertulis di
-# "Panduan Aplikasi BAZNAS Microfinance Masjid", section Pilihan Jumlah
+# "Panduan Aplikasi BAZNAS Microfinance UPZ Desa", section Pilihan Jumlah
 # Pinjaman). Berlaku untuk entri BARU saja — tidak mempengaruhi data
 # historis yang sudah ada (mis. skema "PINJAMAN VIP" lama).
 BMM_MAX_NOMINAL_PINJAMAN = 3_000_000
@@ -86,19 +86,19 @@ class AdminService:
         "berkas-laporan": BerkasLaporan, "saran-masukan": SaranDanMasukan,
     }
 
-    # --- Masjid CRUD ---
-    def create_masjid(self, db: Session, data: dict) -> dict:
-        obj = create_record(db, Masjid, data)
+    # --- UPZ Desa CRUD ---
+    def create_upz_desa(self, db: Session, data: dict) -> dict:
+        obj = create_record(db, UpzDesa, data)
         from services.admin_service.queries.admin_queries import _get_pk
-        pk = _get_pk(Masjid)
+        pk = _get_pk(UpzDesa)
         return {pk: getattr(obj, pk)}
 
-    def update_masjid(self, db: Session, id_masjid: str, data: dict) -> bool:
-        obj = update_record(db, Masjid, id_masjid, data)
+    def update_upz_desa(self, db: Session, id_upz_desa: str, data: dict) -> bool:
+        obj = update_record(db, UpzDesa, id_upz_desa, data)
         return obj is not None
 
-    def delete_masjid(self, db: Session, id_masjid: str) -> bool:
-        return delete_record(db, Masjid, id_masjid)
+    def delete_upz_desa(self, db: Session, id_upz_desa: str) -> bool:
+        return delete_record(db, UpzDesa, id_upz_desa)
 
     # --- Content CRUD ---
     def create_content(self, db: Session, tipe: str, data: dict):
@@ -169,7 +169,7 @@ class AdminService:
         model = self._WILAYAH_MODELS[tipe]
         return delete_record(db, model, pk_value), None
 
-    # --- Masjid Detail CRUD ---
+    # --- UPZ Desa Detail CRUD ---
     def create_detail(self, db: Session, tipe: str, data: dict):
         if tipe not in self._DETAIL_MODELS:
             return None, f"Tipe detail '{tipe}' tidak dikenal"
@@ -253,7 +253,7 @@ class AdminService:
     def _apply_transaksi_side_effects(self, db: Session, data: dict) -> None:
         """
         Saat transaksi pencairan (nominal_peminjaman) atau pengembalian
-        (nominal_pengembalian) dicatat, perbarui saldo masjid & sisa dana
+        (nominal_pengembalian) dicatat, perbarui saldo upz_desa & sisa dana
         peserta secara otomatis (bukan cuma dicatat sebagai baris ledger).
         `infak_peserta` dicatat terpisah, TIDAK menambah saldo pokok
         (mengikuti tampilan asli "Total Riwayat Penerimaan Infak" yang
@@ -399,7 +399,7 @@ class AdminService:
             tanggal_selesai=data.get("tanggal_selesai") or None,
             penulis=data.get("penulis") or None,
             # provenance — dari sesi login (frontend belum kirim, backend siap duluan)
-            id_masjid=(current_user.id_jalur_akses if current_user else None) or None,
+            id_upz_desa=(current_user.id_jalur_akses if current_user else None) or None,
             id_user=(current_user.id_user if current_user else None),
         )
         obj.slug = self._make_publikasi_slug(db, judul, jenis, obj.id_publikasi)
@@ -473,35 +473,35 @@ class AdminService:
 
     def create_pengajuan(self, db: Session, data: dict) -> dict:
         """
-        Buat pengajuan masjid (langkah 1). Kode masjid & slug diterbitkan LANGSUNG
+        Buat pengajuan UPZ Desa (langkah 1). Kode UPZ Desa & slug diterbitkan LANGSUNG
         (bukan menunggu approval) agar pemohon bisa langsung melanjutkan ke langkah 2
-        (daftar admin masjid dengan kode tsb). Record masjid & user admin baru dibuat
+        (daftar admin UPZ Desa dengan kode tsb). Record upz_desa & user admin baru dibuat
         saat Admin BAZNAS menyetujui pengajuan.
         """
         import secrets
-        from shared.models.masjid import Masjid
+        from shared.models.upz_desa import UpzDesa
 
-        # Generate kode unik (format: MSJ-XXXXXX)
+        # Generate kode unik (format: UPZ-XXXXXX)
         kode = None
         for _ in range(10):
-            candidate = "MSJ-" + secrets.token_hex(3).upper()
-            exists = db.query(Masjid).filter(Masjid.kode_org_baznas == candidate).first()
+            candidate = "UPZ-" + secrets.token_hex(3).upper()
+            exists = db.query(UpzDesa).filter(UpzDesa.kode_org_baznas == candidate).first()
             if not exists:
                 kode = candidate
                 break
         if not kode:
-            return {"error": "Gagal membuat kode masjid. Silakan coba lagi."}
+            return {"error": "Gagal membuat kode UPZ Desa. Silakan coba lagi."}
 
         data["kode_org_baznas"] = kode
-        data["slug_masjid"] = self._make_slug(data.get("nama_masjid"), kode)
-        obj = create_record(db, PengajuanMasjid, data)
-        return {"id": obj.id_pengajuan, "kode_org_baznas": kode, "slug_masjid": obj.slug_masjid}
+        data["slug_upz_desa"] = self._make_slug(data.get("nama_upz_desa"), kode)
+        obj = create_record(db, PengajuanUpzDesa, data)
+        return {"id": obj.id_pengajuan, "kode_org_baznas": kode, "slug_upz_desa": obj.slug_upz_desa}
 
     def update_pengajuan(self, db: Session, pk_value: int, data: dict) -> dict | None:
         """
         Update pengajuan (langkah 2): simpan data admin pemohon.
-        Jika status='disetujui', otomatis AKTIVASI — membuat record masjid
-        (memakai kode yang sudah diterbitkan saat create) + user Admin Masjid
+        Jika status='disetujui', otomatis AKTIVASI — membuat record UPZ Desa
+        (memakai kode yang sudah diterbitkan saat create) + user Admin UPZ Desa
         dari data pemohon, SEKALIGUS dalam sekali konfirmasi.
         Mengembalikan dict pengajuan terbaru, dict {"error": ...} jika ada
         masalah validasi, atau None jika tidak ditemukan.
@@ -509,17 +509,17 @@ class AdminService:
         status = str(data.get("status_pengajuan") or data.get("status") or "").lower()
 
         # Guard: aktivasi memerlukan data admin pemohon lengkap (nama + email),
-        # agar tidak ada masjid teraktivasi tanpa akun Admin Masjid.
+        # agar tidak ada UPZ Desa teraktivasi tanpa akun Admin UPZ Desa.
         if status == "disetujui":
-            existing = db.query(PengajuanMasjid).filter(
-                PengajuanMasjid.id_pengajuan == pk_value
+            existing = db.query(PengajuanUpzDesa).filter(
+                PengajuanUpzDesa.id_pengajuan == pk_value
             ).first()
             if existing is None:
                 return None
             if not (existing.nama_pemohon and existing.email_pemohon):
-                return {"error": "Data admin pemohon belum lengkap. Pemohon harus menyelesaikan pendaftaran admin masjid terlebih dahulu."}
+                return {"error": "Data admin pemohon belum lengkap. Pemohon harus menyelesaikan pendaftaran admin UPZ Desa terlebih dahulu."}
 
-        obj = update_record(db, PengajuanMasjid, pk_value, data)
+        obj = update_record(db, PengajuanUpzDesa, pk_value, data)
         if obj is None:
             return None
 
@@ -527,46 +527,46 @@ class AdminService:
             self._activate_pengajuan(db, obj)
         return model_to_dict(obj)
 
-    def _activate_pengajuan(self, db: Session, pengajuan: PengajuanMasjid) -> None:
-        """Aktivasi: buat masjid + user Admin Masjid dari data pengajuan (sekali konfirmasi)."""
-        from shared.models.masjid import Masjid
+    def _activate_pengajuan(self, db: Session, pengajuan: PengajuanUpzDesa) -> None:
+        """Aktivasi: buat UPZ Desa + user Admin UPZ Desa dari data pengajuan (sekali konfirmasi)."""
+        from shared.models.upz_desa import UpzDesa
         from services.auth_service.queries.auth_queries import create_user, get_user_by_email
         from shared.utils.jwt_helper import get_password_hash
         from shared.config.constants import (
-            DEFAULT_PASSWORD, DEFAULT_AVATAR, JALUR_MASJID, DEFAULT_USER_LEVEL,
+            DEFAULT_PASSWORD, DEFAULT_AVATAR, JALUR_UPZ_DESA, DEFAULT_USER_LEVEL,
         )
 
         kode = pengajuan.kode_org_baznas
         if not kode:
             return
 
-        # 1) Buat record masjid (id_masjid = kode masjid)
-        existing = db.query(Masjid).filter(Masjid.kode_org_baznas == kode).first()
+        # 1) Buat record UPZ Desa (id_upz_desa = kode UPZ Desa)
+        existing = db.query(UpzDesa).filter(UpzDesa.kode_org_baznas == kode).first()
         if not existing:
-            masjid = Masjid(
-                id_masjid=kode,
+            upz_desa = UpzDesa(
+                id_upz_desa=kode,
                 kode_org_baznas=kode,
-                nama_masjid=pengajuan.nama_masjid,
-                alamat_masjid=pengajuan.alamat_masjid,
-                email_masjid=pengajuan.email_pemohon or pengajuan.email_masjid,
-                nohp_masjid=pengajuan.nohp_masjid,
+                nama_upz_desa=pengajuan.nama_upz_desa,
+                alamat_upz_desa=pengajuan.alamat_upz_desa,
+                email_upz_desa=pengajuan.email_pemohon or pengajuan.email_upz_desa,
+                nohp_upz_desa=pengajuan.nohp_upz_desa,
                 id_provinsi=pengajuan.id_provinsi,
                 id_kabupaten_kota=pengajuan.id_kabupaten_kota,
                 id_kecamatan=pengajuan.id_kecamatan,
                 id_kelurahan_desa=pengajuan.id_kelurahan_desa,
-                slug_masjid=pengajuan.slug_masjid or self._make_slug(pengajuan.nama_masjid, kode),
+                slug_upz_desa=pengajuan.slug_upz_desa or self._make_slug(pengajuan.nama_upz_desa, kode),
                 status_aktif=1,
             )
-            db.add(masjid)
+            db.add(upz_desa)
             db.commit()
-            db.refresh(masjid)
+            db.refresh(upz_desa)
 
-        # 2) Buat user Admin Masjid dari data pemohon (jika belum ada / email unik)
+        # 2) Buat user Admin UPZ Desa dari data pemohon (jika belum ada / email unik)
         email = (pengajuan.email_pemohon or "").strip()
         if email and not get_user_by_email(db, email):
             user = create_user(
                 db,
-                jalur_akses=JALUR_MASJID,
+                jalur_akses=JALUR_UPZ_DESA,
                 id_jalur_akses=kode,
                 nama=pengajuan.nama_pemohon,
                 jk=pengajuan.jk_pemohon,
@@ -575,11 +575,11 @@ class AdminService:
                 alamat=pengajuan.alamat_pemohon,
                 kode_org_baznas=kode,
                 password=get_password_hash(DEFAULT_PASSWORD),
-                id_level=2,  # Admin Masjid
+                id_level=2,  # Admin UPZ Desa
                 id_labels=1,  # Admin
                 avatar=DEFAULT_AVATAR,
                 status_aktif=1,
-                catatan="Dibuat via persetujuan pengajuan masjid",
+                catatan="Dibuat via persetujuan pengajuan UPZ Desa",
             )
             pengajuan.id_user = user.id_user
             db.commit()
@@ -587,7 +587,7 @@ class AdminService:
 
     @staticmethod
     def _make_slug(nama: str | None, suffix: str) -> str:
-        """Buat slug unik dari nama masjid."""
+        """Buat slug unik dari nama UPZ Desa."""
         import re
         if not nama:
             return suffix.lower()
@@ -595,10 +595,10 @@ class AdminService:
         return f"{base}-{suffix.lower()}" if base else suffix.lower()
 
     def delete_pengajuan(self, db: Session, pk_value: int) -> bool:
-        return delete_record(db, PengajuanMasjid, pk_value)
+        return delete_record(db, PengajuanUpzDesa, pk_value)
 
     # --- Bulk Sync Detail ---
-    def sync_masjid_detail(self, db: Session, id_masjid: str, data: Dict[str, List[Dict[str, Any]]]) -> dict:
+    def sync_upz_desa_detail(self, db: Session, id_upz_desa: str, data: Dict[str, List[Dict[str, Any]]]) -> dict:
         mapping = {
             "fasilitas": Fasilitas, "images": Images, "dokumen": Document,
             "bank": Bank, "medsos": Medsos, "logo": Logo,
@@ -610,7 +610,7 @@ class AdminService:
             items = data.get(key, [])
             if not items:
                 continue
-            created = sync_masjid_detail_replace(db, model, id_masjid, items)
+            created = sync_upz_desa_detail_replace(db, model, id_upz_desa, items)
             results[key] = created
         db.commit()
         return results

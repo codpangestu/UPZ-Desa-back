@@ -1,5 +1,5 @@
 from shared.models.users import Users
-from shared.models.masjid import Masjid
+from shared.models.upz_desa import UpzDesa
 from shared.models.master import (
     Levels, Labels, JenisDana, JenisHarta, JenisLaporan,
     JenisPerolehanAset, LabelInfoDana, Tema,
@@ -19,7 +19,7 @@ from shared.models.transaksi import (
     BukukasPenerimaan, BukukasPengeluaran, Kas, Coa,
     BukuAset, BerkasLaporan, SaranDanMasukan
 )
-from shared.models.masjid_detail import (
+from shared.models.upz_desa_detail import (
     Fasilitas, Images, Document, Bank, Medsos, Logo,
     MitraKerjasama, Qris, Struktur, Kegiatan, Videos
 )
@@ -27,7 +27,7 @@ from shared.models.wilayah import (
     Provinsi, KabupatenKota, Kecamatan, KelurahanDesa
 )
 from shared.models.pengajuan import (
-    PengajuanMasjid, PengajuanUserMasjid
+    PengajuanUpzDesa, PengajuanUserUpzDesa
 )
 from shared.models.microfinance import (
     BmfiKategoriPengesahanMicrofinance, BmfiJenisAngsuran, BmfiSkemaPinjaman,
@@ -40,7 +40,7 @@ from shared.models.microfinance import (
 )
 
 __all__ = [
-    "Users", "Masjid",
+    "Users", "UpzDesa",
     "Levels", "Labels", "JenisDana", "JenisHarta", "JenisLaporan",
     "JenisPerolehanAset", "LabelInfoDana", "Tema",
     "KategoriAcara", "KategoriCerita", "KategoriDonasi",
@@ -57,7 +57,7 @@ __all__ = [
     "Fasilitas", "Images", "Document", "Bank", "Medsos", "Logo",
     "MitraKerjasama", "Qris", "Struktur", "Kegiatan", "Videos",
     "Provinsi", "KabupatenKota", "Kecamatan", "KelurahanDesa",
-    "PengajuanMasjid", "PengajuanUserMasjid",
+    "PengajuanUpzDesa", "PengajuanUserUpzDesa",
     "BmfiKategoriPengesahanMicrofinance", "BmfiJenisAngsuran", "BmfiSkemaPinjaman",
     "BmfiSejarahDanProfilMicrofinance", "BmfiSaldoMicrofinance",
     "BmfiPilihanSkemaPinjaman", "BmfiPendamping", "BmfiPesertaProgram",

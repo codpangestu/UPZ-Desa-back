@@ -127,13 +127,13 @@ def detail_panduan_pengelola(slug: str, db: Session = Depends(get_db)):
     return ApiResponse(data=data)
 
 
-# ===== MASJID PUBLIC DETAIL =====
+# ===== UPZ DESA PUBLIC DETAIL =====
 
-# PENTING: /masjid/search HARUS terdaftar SEBELUM /masjid/{slug} — kalau tidak,
+# PENTING: /upz-desa/search HARUS terdaftar SEBELUM /upz-desa/{slug} — kalau tidak,
 # FastAPI menangkap "search" sebagai slug → endpoint pencarian selalu 404
-# (bug pra-eksisting: /masjid/{slug} duluan di file ini).
-@router.get("/masjid/search")
-def search_masjid(
+# (bug pra-eksisting: /upz-desa/{slug} duluan di file ini).
+@router.get("/upz-desa/search")
+def search_upz_desa(
     nama: Optional[str] = None,
     jenis: Optional[str] = None,
     tipologi: Optional[str] = None,
@@ -143,21 +143,21 @@ def search_masjid(
     limit: int = Query(50, ge=1, le=500),
     db: Session = Depends(get_db),
 ):
-    data = service.get_masjid_public_detail_by_search(
+    data = service.get_upz_desa_public_detail_by_search(
         db, nama, jenis, tipologi, id_provinsi, id_kabupaten_kota, id_kecamatan, limit,
     )
     return ApiResponse(data=data)
 
 
-@router.get("/masjid/{slug}")
-def public_masjid_detail(slug: str, db: Session = Depends(get_db)):
-    data = service.get_masjid_public_detail(db, slug)
+@router.get("/upz-desa/{slug}")
+def public_upz_desa_detail(slug: str, db: Session = Depends(get_db)):
+    data = service.get_upz_desa_public_detail(db, slug)
     if not data:
-        return ApiResponse(status_code="404", status="Masjid tidak ditemukan")
+        return ApiResponse(status_code="404", status="UPZ Desa tidak ditemukan")
     return ApiResponse(data=data)
 
 
-# ===== ACARA / CERITA / DONASI (publikasi masjid) =====
+# ===== ACARA / CERITA / DONASI (publikasi UPZ Desa) =====
 
 @router.get("/acara")
 def list_acara(

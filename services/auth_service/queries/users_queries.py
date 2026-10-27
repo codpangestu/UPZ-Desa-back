@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from typing import Optional
 from shared.models.users import Users
 from shared.models.master import Levels, Labels
-from shared.models.masjid import Masjid
+from shared.models.upz_desa import UpzDesa
 
 
 def get_users_list(
@@ -16,10 +16,10 @@ def get_users_list(
         Users.jk, Users.kode_org_baznas, Users.id_jalur_akses,
         Users.id_level, Users.id_labels, Users.status_aktif,
         Users.created_at, Levels.nama_level, Labels.nama_labels,
-        Masjid.nama_masjid, Masjid.alamat_masjid, Masjid.id_masjid,
+        UpzDesa.nama_upz_desa, UpzDesa.alamat_upz_desa, UpzDesa.id_upz_desa,
     ).outerjoin(Levels, Users.id_level == Levels.id_level
     ).outerjoin(Labels, Users.id_labels == Labels.id_labels
-    ).outerjoin(Masjid, Masjid.id_masjid == Users.id_jalur_akses)
+    ).outerjoin(UpzDesa, UpzDesa.id_upz_desa == Users.id_jalur_akses)
 
     if id_provinsi:
         q = q.filter(Users.id_provinsi == id_provinsi)
@@ -36,10 +36,10 @@ def get_user_detail(db: Session, id_user: int):
         Users.id_user, Users.nama, Users.email, Users.jk, Users.nohp,
         Users.id_jalur_akses, Users.id_level, Users.id_labels,
         Levels.nama_level, Labels.nama_labels,
-        Masjid.nama_masjid, Masjid.id_masjid, Masjid.kode_org_baznas,
+        UpzDesa.nama_upz_desa, UpzDesa.id_upz_desa, UpzDesa.kode_org_baznas,
     ).outerjoin(Levels, Users.id_level == Levels.id_level
     ).outerjoin(Labels, Users.id_labels == Labels.id_labels
-    ).outerjoin(Masjid, Masjid.id_masjid == Users.id_jalur_akses
+    ).outerjoin(UpzDesa, UpzDesa.id_upz_desa == Users.id_jalur_akses
     ).filter(Users.id_user == id_user).first()
 
 

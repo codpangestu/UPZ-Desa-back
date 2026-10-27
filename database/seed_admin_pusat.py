@@ -1,5 +1,5 @@
 """
-Seeder: Admin Pusat account for MENARA Masjid
+Seeder: Admin Pusat account for UPZ Desa
 Jalankan: python -m database.seed_admin_pusat
 """
 
@@ -16,10 +16,10 @@ from sqlalchemy import text
 
 LEVELS = [
     (1, "Admin Pusat"),
-    (2, "Admin Masjid"),
+    (2, "Admin UPZ Desa"),
     (3, "Petugas"),
-    # NOTE: id 4/5/6 SUDAH dipakai data legacy (Anggota/Admin Masjid/Admin
-    # Monitor Masjid) — JANGAN dipakai ulang. DB legacy juga sudah punya baris
+    # NOTE: id 4/5/6 SUDAH dipakai data legacy (Anggota/Admin UPZ Desa/Admin
+    # Monitor UPZ Desa) — JANGAN dipakai ulang. DB legacy juga sudah punya baris
     # 10=Admin BAZNAS Pusat, 11=Admin BAZNAS Provinsi, 12=Admin BAZNAS
     # Kabupaten Kota — persis konsep Admin Daerah/Kab di bawah, jadi id-nya
     # disamakan. 13 sebelumnya placeholder "Level Baru" tanpa user, dipakai
@@ -51,7 +51,7 @@ ADMIN_PUSAT = {
 
 # Akun demo untuk 3 role "anak" Admin BAZNAS yang scope-nya dipersempit ke
 # wilayah tertentu (lihat CONTEXT.md section 12). Wilayah dipilih yang punya
-# data masjid nyata di DB lokal supaya hasil scoping langsung terlihat saat
+# data UPZ Desa nyata di DB lokal supaya hasil scoping langsung terlihat saat
 # login: Jawa Tengah (33) > Kab. Banjarnegara (3304) > Kec. Wanayasa (330417).
 # jalur_akses tetap 'Pusat' (anak Admin BAZNAS) — login lewat opsi dropdown
 # "Admin BAZNAS", role sebenarnya di-infer dari id_level di frontend.
@@ -224,7 +224,7 @@ def seed_scoped_admins(db):
 
 def main():
     print("=" * 50)
-    print("  MENARA Masjid - Seed Admin Pusat")
+    print("  UPZ Desa - Seed Admin Pusat")
     print("=" * 50)
     print()
 

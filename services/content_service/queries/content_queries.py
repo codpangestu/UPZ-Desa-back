@@ -7,10 +7,10 @@ from shared.models.content import (
     DokumentasiSosialisasi, InfoPemberitahuan, Infografis,
     Inspirasi, Infovideo, Infoayat, Infohadits, Infodoa,
 )
-from shared.models.masjid_detail import (
+from shared.models.upz_desa_detail import (
     Fasilitas, Images, Document, Bank, Medsos, Struktur, Kegiatan,
 )
-from shared.models.masjid import Masjid
+from shared.models.upz_desa import UpzDesa
 
 
 def get_home_data(db: Session) -> dict:
@@ -22,7 +22,7 @@ def get_home_data(db: Session) -> dict:
     postingan = db.query(Postingan).filter(Postingan.status_aktif == 1).order_by(Postingan.id_postingan.desc()).limit(14).all()
     panduan_pengguna = db.query(PanduanPengguna).order_by(PanduanPengguna.id_panduan_pengguna.desc()).limit(1).all()
     panduan_pengelola = db.query(PanduanPengelola).order_by(PanduanPengelola.id_panduan_pengelola.desc()).limit(1).all()
-    masjid = db.query(Masjid).order_by(Masjid.id_masjid.desc()).limit(3).all()
+    upz_desa = db.query(UpzDesa).order_by(UpzDesa.id_upz_desa.desc()).limit(3).all()
     info_pemberitahuan = db.query(InfoPemberitahuan).order_by(InfoPemberitahuan.id_info_pemberitahuan.desc()).limit(1).all()
     infografis = db.query(Infografis).order_by(Infografis.id_infografis.desc()).limit(1).all()
     inspirasi = db.query(Inspirasi).order_by(Inspirasi.id_inspirasi.desc()).limit(1).all()
@@ -40,7 +40,7 @@ def get_home_data(db: Session) -> dict:
         "postingan": postingan,
         "panduan_pengguna": panduan_pengguna,
         "panduan_pengelola": panduan_pengelola,
-        "masjid": masjid,
+        "upz_desa": upz_desa,
         "info_pemberitahuan": info_pemberitahuan,
         "infografis": infografis,
         "inspirasi": inspirasi,
@@ -51,20 +51,20 @@ def get_home_data(db: Session) -> dict:
     }
 
 
-def get_masjid_public_detail(db: Session, id_masjid: str) -> dict:
+def get_upz_desa_public_detail(db: Session, id_upz_desa: str) -> dict:
 
-    fasilitas = db.query(Fasilitas).filter(Fasilitas.parent_id == id_masjid).all()
-    foto = db.query(Images).filter(Images.parent_id == id_masjid).all()
-    dokumen = db.query(Document).filter(Document.parent_id == id_masjid).all()
-    bank = db.query(Bank).filter(Bank.parent_id == id_masjid).all()
-    medsos = db.query(Medsos).filter(Medsos.parent_id == id_masjid).all()
-    struktur = db.query(Struktur).filter(Struktur.parent_id == id_masjid).all()
-    kegiatan = db.query(Kegiatan).filter(Kegiatan.parent_id == id_masjid).all()
-    kajian = db.query(Kajian).filter(Kajian.id_masjid == id_masjid).all()
-    acara = db.query(Acara).filter(Acara.id_masjid == id_masjid).all()
-    cerita = db.query(Cerita).filter(Cerita.id_masjid == id_masjid).all()
-    donasi = db.query(Donasi).filter(Donasi.id_masjid == id_masjid).all()
-    postingan = db.query(Postingan).filter(Postingan.id_masjid == id_masjid).all()
+    fasilitas = db.query(Fasilitas).filter(Fasilitas.parent_id == id_upz_desa).all()
+    foto = db.query(Images).filter(Images.parent_id == id_upz_desa).all()
+    dokumen = db.query(Document).filter(Document.parent_id == id_upz_desa).all()
+    bank = db.query(Bank).filter(Bank.parent_id == id_upz_desa).all()
+    medsos = db.query(Medsos).filter(Medsos.parent_id == id_upz_desa).all()
+    struktur = db.query(Struktur).filter(Struktur.parent_id == id_upz_desa).all()
+    kegiatan = db.query(Kegiatan).filter(Kegiatan.parent_id == id_upz_desa).all()
+    kajian = db.query(Kajian).filter(Kajian.id_upz_desa == id_upz_desa).all()
+    acara = db.query(Acara).filter(Acara.id_upz_desa == id_upz_desa).all()
+    cerita = db.query(Cerita).filter(Cerita.id_upz_desa == id_upz_desa).all()
+    donasi = db.query(Donasi).filter(Donasi.id_upz_desa == id_upz_desa).all()
+    postingan = db.query(Postingan).filter(Postingan.id_upz_desa == id_upz_desa).all()
 
     return {
         "fasilitas": fasilitas,

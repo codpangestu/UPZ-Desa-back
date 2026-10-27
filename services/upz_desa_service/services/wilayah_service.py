@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from typing import Optional
-from services.masjid_service.queries.wilayah_queries import get_provinsi, get_kabupaten_kota, get_kecamatan, get_kelurahan_desa
+from services.upz_desa_service.queries.wilayah_queries import get_provinsi, get_kabupaten_kota, get_kecamatan, get_kelurahan_desa
 from shared.schemas.base import model_to_dict
 
 

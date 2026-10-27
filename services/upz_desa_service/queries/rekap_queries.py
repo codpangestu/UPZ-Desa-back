@@ -21,7 +21,7 @@ def get_rekap_penerimaan(
     end_date: Optional[str] = None,
 ):
     q = db.query(
-        func.count(func.distinct(BukukasPenerimaan.id_jalur_akses)).label("jumlah_masjid"),
+        func.count(func.distinct(BukukasPenerimaan.id_jalur_akses)).label("jumlah_upz_desa"),
         func.coalesce(func.sum(BukukasPenerimaan.nominal_masuk), 0).label("total_penerimaan"),
         func.coalesce(func.sum(BukukasPenerimaan.jumlah_donatur), 0).label("total_donatur"),
     )
@@ -53,7 +53,7 @@ def get_rekap_pengeluaran(
     end_date: Optional[str] = None,
 ):
     q = db.query(
-        func.count(func.distinct(BukukasPengeluaran.id_jalur_akses)).label("jumlah_masjid"),
+        func.count(func.distinct(BukukasPengeluaran.id_jalur_akses)).label("jumlah_upz_desa"),
         func.coalesce(func.sum(BukukasPengeluaran.nominal_keluar), 0).label("total_pengeluaran"),
         func.coalesce(func.sum(BukukasPengeluaran.jumlah_penerima_manfaat), 0).label("total_penerima_manfaat"),
     )
@@ -75,21 +75,21 @@ def get_rekap_pengeluaran(
     return q.first()
 
 
-def get_rekap_by_masjid(
+def get_rekap_by_upz_desa(
     db: Session,
-    id_masjid: str,
+    id_upz_desa: str,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> dict:
     p_query = db.query(
         func.coalesce(func.sum(BukukasPenerimaan.nominal_masuk), 0).label("total_penerimaan"),
         func.coalesce(func.sum(BukukasPenerimaan.jumlah_donatur), 0).label("total_donatur"),
-    ).filter(BukukasPenerimaan.id_jalur_akses == id_masjid)
+    ).filter(BukukasPenerimaan.id_jalur_akses == id_upz_desa)
 
     pe_query = db.query(
         func.coalesce(func.sum(BukukasPengeluaran.nominal_keluar), 0).label("total_pengeluaran"),
         func.coalesce(func.sum(BukukasPengeluaran.jumlah_penerima_manfaat), 0).label("total_penerima_manfaat"),
-    ).filter(BukukasPengeluaran.id_jalur_akses == id_masjid)
+    ).filter(BukukasPengeluaran.id_jalur_akses == id_upz_desa)
 
     if start_date:
         p_query = p_query.filter(BukukasPenerimaan.tanggal >= start_date)
@@ -101,7 +101,7 @@ def get_rekap_by_masjid(
     p = p_query.first()
     pe = pe_query.first()
 
-    result = {"id_masjid": id_masjid}
+    result = {"id_upz_desa": id_upz_desa}
     if p:
         result.update(dict(p._mapping))
     if pe:
@@ -109,14 +109,14 @@ def get_rekap_by_masjid(
     return result
 
 
-def get_rekap_bulanan_by_masjid(
+def get_rekap_bulanan_by_upz_desa(
     db: Session,
-    id_masjid: str,
+    id_upz_desa: str,
     tahun: Optional[int] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> dict:
-    """Rekap penerimaan vs pengeluaran per bulan untuk 1 masjid (FR-2.5).
+    """Rekap penerimaan vs pengeluaran per bulan untuk 1 upz_desa (FR-2.5).
 
     Dua mode (FR-2.6):
     - ``tahun`` saja  → 12 entri Jan–Des tahun tsb (default: tahun berjalan).
@@ -149,8 +149,8 @@ def get_rekap_bulanan_by_masjid(
         cursor = datetime.date(cursor.year + (1 if cursor.month == 12 else 0),
                                1 if cursor.month == 12 else cursor.month + 1, 1)
 
-    base_filter_p = [BukukasPenerimaan.id_jalur_akses == id_masjid]
-    base_filter_pe = [BukukasPengeluaran.id_jalur_akses == id_masjid]
+    base_filter_p = [BukukasPenerimaan.id_jalur_akses == id_upz_desa]
+    base_filter_pe = [BukukasPengeluaran.id_jalur_akses == id_upz_desa]
     if start_date and end_date:
         base_filter_p.append(BukukasPenerimaan.tanggal >= start_date)
         base_filter_p.append(BukukasPenerimaan.tanggal <= end_date)
@@ -194,7 +194,7 @@ def get_rekap_bulanan_by_masjid(
     total_pengeluaran = sum(b["pengeluaran"] for b in bulanan)
 
     return {
-        "id_masjid": id_masjid,
+        "id_upz_desa": id_upz_desa,
         "start_date": d_start.isoformat(),
         "end_date": d_end.isoformat(),
         "bulanan": bulanan,

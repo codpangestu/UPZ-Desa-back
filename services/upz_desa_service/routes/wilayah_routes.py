@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, Header
 from sqlalchemy.orm import Session
 from typing import Optional
 from shared.config.database import get_db
-from services.masjid_service.services.wilayah_service import WilayahService
+from services.upz_desa_service.services.wilayah_service import WilayahService
 from shared.utils.route_wrapper import require_api_key
 from shared.utils.response_helper import ApiResponse
 

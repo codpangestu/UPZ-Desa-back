@@ -1,6 +1,6 @@
 """
 Admin Service — UPZ Desa API
-Handles: admin CRUD (masjid, content, master, wilayah, transaksi, pengajuan), master data
+Handles: admin CRUD (upz_desa, content, master, wilayah, transaksi, pengajuan), master data
 Port: 8005
 """
 import sys

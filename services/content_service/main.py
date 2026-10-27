@@ -1,6 +1,6 @@
 """
 Content Service — UPZ Desa API
-Handles: home, informasi, kajian, acara, cerita, donasi, postingan, panduan, masjid public
+Handles: home, informasi, kajian, acara, cerita, donasi, postingan, panduan, upz_desa public
 Port: 8003
 """
 import sys

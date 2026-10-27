@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, Header, HTTPException
 from sqlalchemy.orm import Session
 from typing import Optional
 from shared.config.database import get_db
-from services.masjid_service.services.masjid_service import MasjidService
+from services.upz_desa_service.services.upz_desa_service import UpzDesaService
 from shared.utils.route_wrapper import require_api_key
 from shared.utils.response_helper import ApiResponse
 from shared.middlewares.auth_middleware import get_current_user
@@ -10,7 +10,7 @@ from shared.middlewares.rbac_middleware import get_user_scope_columns
 from shared.models.users import Users
 
 router = APIRouter()
-service = MasjidService()
+service = UpzDesaService()
 
 
 def _apply_scope(current_user: Users, filters: dict) -> dict:
@@ -28,28 +28,28 @@ def _apply_scope(current_user: Users, filters: dict) -> dict:
     return filters
 
 
-def _check_masjid_scope(db: Session, current_user: Users, id_masjid: str) -> None:
-    """403 jika masjid target di luar wilayah current_user (Admin Daerah/Kab/KUA)."""
+def _check_upz_desa_scope(db: Session, current_user: Users, id_upz_desa: str) -> None:
+    """403 jika UPZ Desa target di luar wilayah current_user (Admin Daerah/Kab/KUA)."""
     scope_cols = get_user_scope_columns(current_user)
     if not scope_cols:
         return
-    from services.masjid_service.queries.masjid_queries import get_masjid_by_id
-    masjid = get_masjid_by_id(db, id_masjid)
-    if not masjid:
-        raise HTTPException(status_code=404, detail="Masjid tidak ditemukan")
+    from services.upz_desa_service.queries.upz_desa_queries import get_upz_desa_by_id
+    upz_desa = get_upz_desa_by_id(db, id_upz_desa)
+    if not upz_desa:
+        raise HTTPException(status_code=404, detail="UPZ Desa tidak ditemukan")
     for col, val in scope_cols.items():
-        if getattr(masjid, col, None) != val:
-            raise HTTPException(status_code=403, detail="Masjid di luar wilayah Anda")
+        if getattr(upz_desa, col, None) != val:
+            raise HTTPException(status_code=403, detail="UPZ Desa di luar wilayah Anda")
 
 
-@router.get("/masjid/detail/{id_masjid}")
-def get_detail_masjid(id_masjid: str, db: Session = Depends(get_db)):
-    data = service.get_detail(db, id_masjid)
+@router.get("/upz-desa/detail/{id_upz_desa}")
+def get_detail_upz_desa(id_upz_desa: str, db: Session = Depends(get_db)):
+    data = service.get_detail(db, id_upz_desa)
     return ApiResponse(data=data)
 
 
-@router.get("/masjid/list")
-def get_list_masjid(
+@router.get("/upz-desa/list")
+def get_list_upz_desa(
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=100),
     kode_org_baznas: Optional[str] = None,
@@ -82,14 +82,14 @@ def get_list_masjid(
     )
 
 
-@router.get("/masjid/by-wilayah")
-def get_masjid_by_wilayah(
+@router.get("/upz-desa/by-wilayah")
+def get_upz_desa_by_wilayah(
     id_provinsi: int,
     id_kabupaten_kota: Optional[int] = None,
     id_kecamatan: Optional[int] = None,
-    keyword_nama_masjid: Optional[str] = None,
-    keyword_alamat_masjid: Optional[str] = None,
-    keyword_label_masjid: Optional[str] = None,
+    keyword_nama_upz_desa: Optional[str] = None,
+    keyword_alamat_upz_desa: Optional[str] = None,
+    keyword_label_upz_desa: Optional[str] = None,
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=100),
     x_api_key: Optional[str] = Header(None),
@@ -106,21 +106,21 @@ def get_masjid_by_wilayah(
     })
     results = service.get_by_wilayah(
         db, scoped["id_provinsi"], scoped["id_kabupaten_kota"], scoped["id_kecamatan"],
-        keyword_nama_masjid, keyword_alamat_masjid, keyword_label_masjid, page, per_page,
+        keyword_nama_upz_desa, keyword_alamat_upz_desa, keyword_label_upz_desa, page, per_page,
     )
     return ApiResponse(data=[dict(r._mapping) for r in results])
 
 
-@router.get("/masjid/pengurus/{id_masjid}")
-def get_pengurus_masjid(
-    id_masjid: str,
+@router.get("/upz-desa/pengurus/{id_upz_desa}")
+def get_pengurus_upz_desa(
+    id_upz_desa: str,
     x_api_key: Optional[str] = Header(None),
     db: Session = Depends(get_db),
 ):
     err = require_api_key(x_api_key)
     if err:
         return err
-    data = service.get_pengurus(db, id_masjid)
+    data = service.get_pengurus(db, id_upz_desa)
     return ApiResponse(data=data)
 
 
@@ -182,9 +182,9 @@ def get_rekap_pengeluaran(
     return ApiResponse(data=dict(result._mapping) if result else {})
 
 
-@router.get("/rekap/by-masjid/{id_masjid}")
-def get_rekap_by_masjid(
-    id_masjid: str,
+@router.get("/rekap/by-upz-desa/{id_upz_desa}")
+def get_rekap_by_upz_desa(
+    id_upz_desa: str,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     x_api_key: Optional[str] = Header(None),
@@ -194,14 +194,14 @@ def get_rekap_by_masjid(
     err = require_api_key(x_api_key)
     if err:
         return err
-    _check_masjid_scope(db, current_user, id_masjid)
-    result = service.get_rekap_by_masjid(db, id_masjid, start_date=start_date, end_date=end_date)
+    _check_upz_desa_scope(db, current_user, id_upz_desa)
+    result = service.get_rekap_by_upz_desa(db, id_upz_desa, start_date=start_date, end_date=end_date)
     return ApiResponse(data=result)
 
 
-@router.get("/rekap/bulanan/{id_masjid}")
-def get_rekap_bulanan_by_masjid(
-    id_masjid: str,
+@router.get("/rekap/bulanan/{id_upz_desa}")
+def get_rekap_bulanan_by_upz_desa(
+    id_upz_desa: str,
     tahun: Optional[int] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -217,10 +217,10 @@ def get_rekap_bulanan_by_masjid(
     err = require_api_key(x_api_key)
     if err:
         return err
-    _check_masjid_scope(db, current_user, id_masjid)
+    _check_upz_desa_scope(db, current_user, id_upz_desa)
     try:
-        result = service.get_rekap_bulanan_by_masjid(
-            db, id_masjid, tahun=tahun, start_date=start_date, end_date=end_date,
+        result = service.get_rekap_bulanan_by_upz_desa(
+            db, id_upz_desa, tahun=tahun, start_date=start_date, end_date=end_date,
         )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))

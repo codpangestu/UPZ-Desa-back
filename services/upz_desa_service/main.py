@@ -1,6 +1,6 @@
 """
-Masjid Service — UPZ Desa API
-Handles: masjid CRUD, wilayah, rekap, master data (tema, kategori)
+UPZ Desa Service — UPZ Desa API
+Handles: UPZ Desa CRUD, wilayah, rekap, master data (tema, kategori)
 Port: 8002
 """
 import sys
@@ -14,11 +14,11 @@ from shared.middlewares.error_middleware import global_exception_handler
 from shared.middlewares.logging_middleware import logging_middleware
 from shared.middlewares.cors import setup_cors
 
-from services.masjid_service.routes.masjid_routes import router as masjid_router
-from services.masjid_service.routes.wilayah_routes import router as wilayah_router
+from services.upz_desa_service.routes.upz_desa_routes import router as upz_desa_router
+from services.upz_desa_service.routes.wilayah_routes import router as wilayah_router
 
 app = FastAPI(
-    title=f"{env.APP_NAME} - Masjid Service",
+    title=f"{env.APP_NAME} - UPZ Desa Service",
     version=env.APP_VERSION,
     docs_url="/docs" if env.DEBUG else None,
     redoc_url="/redoc" if env.DEBUG else None,
@@ -28,14 +28,14 @@ app.middleware("http")(logging_middleware)
 app.add_exception_handler(Exception, global_exception_handler)
 setup_cors(app)
 
-app.include_router(masjid_router, prefix="/api/v1", tags=["Masjid"])
+app.include_router(upz_desa_router, prefix="/api/v1", tags=["UPZ Desa"])
 app.include_router(wilayah_router, prefix="/api/v1", tags=["Wilayah"])
 
 
 @app.get("/health")
 def health():
-    return {"service": "masjid", "status": "ok"}
+    return {"service": "upz-desa", "status": "ok"}
 
 
 if __name__ == "__main__":
-    uvicorn.run("services.masjid_service.main:app", host="0.0.0.0", port=8002, reload=env.DEBUG)
+    uvicorn.run("services.upz_desa_service.main:app", host="0.0.0.0", port=8002, reload=env.DEBUG)

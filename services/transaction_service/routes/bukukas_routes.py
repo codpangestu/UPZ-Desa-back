@@ -16,7 +16,7 @@ service = BukuKasService()
 
 def _apply_scope(current_user: Users, filters: dict) -> dict:
     """Timpa filter wilayah yang ADA di `filters` dengan scope milik current_user
-    (Admin Daerah/Kab/KUA) — sama seperti pola di masjid_routes.py."""
+    (Admin Daerah/Kab/KUA) — sama seperti pola di upz_desa_routes.py."""
     scope_cols = get_user_scope_columns(current_user)
     if not scope_cols:
         return filters

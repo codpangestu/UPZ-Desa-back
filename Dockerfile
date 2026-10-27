@@ -33,7 +33,7 @@ EXPOSE 8000
 # Default service (use docker-compose to run specific services)
 # Available services:
 #   services.auth_service.main:app      — port 8001
-#   services.masjid_service.main:app    — port 8002
+#   services.upz_desa_service.main:app  — port 8002
 #   services.content_service.main:app   — port 8003
 #   services.transaction_service.main:app — port 8004
 #   services.admin_service.main:app     — port 8005

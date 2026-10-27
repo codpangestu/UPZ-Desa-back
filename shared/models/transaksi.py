@@ -40,7 +40,7 @@ class BukukasPengeluaran(Base):
     id_label_info_dana = Column(Integer, nullable=True)
     id_level = Column(Integer, nullable=True)
     id_jalur_akses = Column(String(50), nullable=True)
-    nama_masjid = Column(String(255), nullable=True)
+    nama_upz_desa = Column(String(255), nullable=True)
     id_provinsi = Column(Integer, nullable=True)
     id_kabupaten_kota = Column(Integer, nullable=True)
     id_kecamatan = Column(Integer, nullable=True)

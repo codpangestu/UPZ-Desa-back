@@ -10,22 +10,22 @@ from shared.models.users import Users
 # di DB: 10=Admin BAZNAS Pusat, 11=Admin BAZNAS Provinsi, 12=Admin BAZNAS
 # Kabupaten Kota; 13 sebelumnya placeholder tanpa user, dipakai utk Admin KUA.
 # JANGAN pakai id 4/5/6 — sudah dipakai data legacy lain (Anggota/Admin
-# Masjid/Admin Monitor Masjid) dengan user asli). Level di luar daftar ini
-# (1=Admin Pusat, 2=Admin Masjid, 3=Petugas, dst.) tidak di-scope.
+# UpzDesa/Admin Monitor UPZ Desa) dengan user asli). Level di luar daftar ini
+# (1=Admin Pusat, 2=Admin UPZ Desa, 3=Petugas, dst.) tidak di-scope.
 # Akun Kab/KUA disimpan dengan HIERARKI LENGKAP (id_provinsi + id_kabupaten_kota
 # untuk Kab; ketiganya untuk KUA) — bukan cuma kolom paling spesifik — supaya
-# endpoint yang mensyaratkan id_provinsi (mis. /masjid/by-wilayah) tetap benar.
+# endpoint yang mensyaratkan id_provinsi (mis. /upz-desa/by-wilayah) tetap benar.
 SCOPED_LEVELS = (11, 12, 13)
 
 
 def get_user_scope_columns(current_user: Users) -> Dict[str, int]:
     """Kolom wilayah (+nilai) yang wajib dipaksakan untuk current_user.
-    Dict kosong jika user tidak di-scope (Admin Pusat/Masjid/Petugas).
+    Dict kosong jika user tidak di-scope (Admin Pusat/UpzDesa/Petugas).
 
     Data legacy menyimpan kolom wilayah yang belum diisi sebagai string kosong
     ('') bukan NULL — harus diperlakukan sama seperti "belum di-set", kalau
     tidak Admin Daerah (yang hanya punya id_provinsi terisi) akan salah
-    ter-filter id_kabupaten_kota='' juga, sehingga tidak ada masjid yang cocok.
+    ter-filter id_kabupaten_kota='' juga, sehingga tidak ada upz_desa yang cocok.
     """
     if current_user.id_level not in SCOPED_LEVELS:
         return {}

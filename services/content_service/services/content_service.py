@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Optional
 from services.content_service.queries.content_queries import (
-    get_home_data, get_masjid_public_detail,
+    get_home_data, get_upz_desa_public_detail,
     list_informasi, detail_informasi,
     list_kajian, detail_kajian,
     list_acara, list_cerita, list_donasi,
@@ -9,7 +9,7 @@ from services.content_service.queries.content_queries import (
     list_guide, detail_guide,
     list_dynamic_content, detail_dynamic_content,
 )
-from services.masjid_service.queries.masjid_queries import search_masjid_public
+from services.upz_desa_service.queries.upz_desa_queries import search_upz_desa_public
 from shared.schemas.base import model_to_dict
 
 
@@ -25,7 +25,7 @@ class ContentService:
             "postingan": [self._format_content(p, "postingan") for p in raw["postingan"]],
             "panduan_pengguna": [self._format_content(p, "panduan_pengguna") for p in raw["panduan_pengguna"]],
             "panduan_pengelola": [self._format_content(p, "panduan_pengelola") for p in raw["panduan_pengelola"]],
-            "masjid": [self._format_masjid_simple(m) for m in raw["masjid"]],
+            "upz_desa": [self._format_upz_desa_simple(m) for m in raw["upz_desa"]],
             "info_pemberitahuan": [self._format_content(i, "info_pemberitahuan") for i in raw["info_pemberitahuan"]],
             "infografis": [self._format_content(i, "infografis") for i in raw["infografis"]],
             "inspirasi": [self._format_content(i, "inspirasi") for i in raw["inspirasi"]],
@@ -120,25 +120,25 @@ class ContentService:
             return None
         return self._format_content(result, prefix.replace("-", "_"))
 
-    def get_masjid_public_detail_by_search(
+    def get_upz_desa_public_detail_by_search(
         self, db: Session,
         nama=None, jenis=None, tipologi=None,
         id_provinsi=None, id_kabupaten_kota=None, id_kecamatan=None,
         limit: int = 50,
     ) -> list:
-        data = search_masjid_public(
+        data = search_upz_desa_public(
             db, nama, jenis, tipologi, id_provinsi, id_kabupaten_kota, id_kecamatan, limit,
         )
         return [model_to_dict(m) for m in data]
 
-    def get_masjid_public_detail(self, db: Session, slug: str):
-        from services.masjid_service.queries.masjid_queries import get_masjid_by_slug
-        m = get_masjid_by_slug(db, slug)
+    def get_upz_desa_public_detail(self, db: Session, slug: str):
+        from services.upz_desa_service.queries.upz_desa_queries import get_upz_desa_by_slug
+        m = get_upz_desa_by_slug(db, slug)
         if not m:
             return None
 
-        related = get_masjid_public_detail(db, m.id_masjid)
-        data = self._format_masjid_simple(m)
+        related = get_upz_desa_public_detail(db, m.id_upz_desa)
+        data = self._format_upz_desa_simple(m)
         data.update({
             "fasilitas": [{"id": f.id_fasilitas, "nama": f.nama_fasilitas, "foto": f.foto_fasilitas, "keterangan": f.keterangan} for f in related["fasilitas"]],
             "foto": [{"id": f.id, "nama": f.name, "src": f.src} for f in related["foto"]],
@@ -197,7 +197,7 @@ class ContentService:
                 base["tanggal"] = str(val)
                 break
 
-        for attr in ["slug_masjid", "slug_kajian", "slug_acara", "slug_cerita", "slug_donasi",
+        for attr in ["slug_upz_desa", "slug_kajian", "slug_acara", "slug_cerita", "slug_donasi",
                      "slug_postingan", "slug_panduan_pengguna", "slug_panduan_pengelola",
                      "slug_pengumuman", "slug_repository", "slug_dokumentasi_pengembangan",
                      "slug_dokumentasi_pengujian", "slug_dokumentasi_sosialisasi", "slug_informasi",
@@ -218,24 +218,24 @@ class ContentService:
         base["tipe"] = tipe
         return base
 
-    def _format_masjid_simple(self, m) -> dict:
-        """Format masjid to simple dict."""
+    def _format_upz_desa_simple(self, m) -> dict:
+        """Format UPZ Desa to simple dict."""
         if not m:
             return {}
         return {
-            "id_masjid": m.id_masjid,
-            "nama_masjid": m.nama_masjid,
-            "slug_masjid": m.slug_masjid,
-            "jenis_masjid": m.jenis_masjid,
+            "id_upz_desa": m.id_upz_desa,
+            "nama_upz_desa": m.nama_upz_desa,
+            "slug_upz_desa": m.slug_upz_desa,
+            "jenis_upz_desa": m.jenis_upz_desa,
             "tipologi": m.tipologi,
-            "alamat_masjid": m.alamat_masjid,
+            "alamat_upz_desa": m.alamat_upz_desa,
             "thumbnail": m.thumbnail,
             "deskripsi": m.deskripsi,
             "background_warna_website": m.background_warna_website,
             "warna_tulisan_website": m.warna_tulisan_website,
             "running_text_website": m.running_text_website,
-            "nohp_masjid": m.nohp_masjid,
-            "email_masjid": m.email_masjid,
+            "nohp_upz_desa": m.nohp_upz_desa,
+            "email_upz_desa": m.email_upz_desa,
             "id_provinsi": m.id_provinsi,
             "id_kabupaten_kota": m.id_kabupaten_kota,
             "id_kecamatan": m.id_kecamatan,

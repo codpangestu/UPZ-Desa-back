@@ -25,9 +25,9 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     )
 
 
-@router.post("/login/admin-masjid", response_model=TokenResponse)
-def login_admin_masjid(request: LoginRequest, db: Session = Depends(get_db)):
-    result = service.login_admin_masjid(db, request.email, request.password)
+@router.post("/login/admin-upz-desa", response_model=TokenResponse)
+def login_admin_upz_desa(request: LoginRequest, db: Session = Depends(get_db)):
+    result = service.login_admin_upz_desa(db, request.email, request.password)
     return TokenResponse(
         access_token=result["access_token"],
         user=result["user"],

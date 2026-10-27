@@ -18,8 +18,8 @@ class BukuKasService:
                 "nama_jenis_dana": r[1],
                 "nama_jenis_harta": r[2],
                 "nama_label_info_dana": r[3],
-                "nama_masjid": r[4],
-                "alamat_masjid": r[5],
+                "nama_upz_desa": r[4],
+                "alamat_upz_desa": r[5],
             }
             for r in data
         ]
@@ -59,8 +59,8 @@ class BukuKasService:
                 "nama_jenis_dana": r[1],
                 "nama_jenis_harta": r[2],
                 "nama_label_info_dana": r[3],
-                "nama_masjid": r[4],
-                "alamat_masjid": r[5],
+                "nama_upz_desa": r[4],
+                "alamat_upz_desa": r[5],
             }
             for r in data
         ]
